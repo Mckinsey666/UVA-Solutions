@@ -70,12 +70,12 @@ int main()
 		getsquare(big_square, big);
 		getsquare(small_square, small);
 		
-		for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < 3; ++i)
 		{
 			cout << find(big_square, small_square, big, small)<<' ';
 			rotate(small_square,small);
 		}
-		cout << endl;
+		cout << find(big_square, small_square, big, small) << endl;
 	}
 	return 0;
 }
