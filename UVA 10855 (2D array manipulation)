@@ -1,0 +1,81 @@
+#include <iostream>
+#define L 100 
+using namespace std;
+
+void print(char arr[L][L], int l)
+{
+	for (int i = 0; i < l; ++i)
+	{
+		for (int j = 0; j < l; ++j)
+			cout << arr[i][j] << ' ';
+		cout << endl;
+	}
+	return;
+}
+
+void getsquare(char sqr[L][L], int l)
+{
+	for (int i = 0; i < l; ++i)
+		for (int j = 0; j < l; ++j)
+			cin >> sqr[i][j];
+}
+
+bool check(char big_sqr[L][L], char small_sqr[L][L], int i, int j, int small)
+{
+	for(int a=0;a<small;++a)
+		for (int b = 0; b < small; ++b)
+		{
+			if (big_sqr[i + a][j + b] != small_sqr[a][b])
+				return false;
+		}
+	return true;
+}
+int find(char big_sqr[L][L], char small_sqr[L][L], int big, int small)
+{
+	int ct = 0;
+	int l = big - small;
+	for(int i = 0 ; i <= l ;++i)
+		for (int j = 0; j <= l; ++j)
+		{
+			if (check(big_sqr, small_sqr, i, j, small))
+				++ct;
+		}
+	return ct;
+}
+void rotate(char arr[L][L], int a)
+{
+	char temp[L][L];
+	for (int i = 0; i < a*a; ++i)
+	{
+		int n = a*(a - 1 - i % a) + i/a;
+		temp[i / a][i % a] = arr[n / a][n % a];
+	}
+	
+	for (int i = 0; i < a; ++i)
+		for (int j = 0; j < a; ++j)
+			arr[i][j] = temp[i][j];
+	return;
+}
+
+int main()
+{
+	int big, small;
+	char big_square[L][L], small_square[L][L];
+
+	while(cin >> big >> small)
+	{
+		if (big == 0)
+			break;
+
+		getsquare(big_square, big);
+		getsquare(small_square, small);
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			cout << find(big_square, small_square, big, small)<<' ';
+			rotate(small_square,small);
+		}
+		cout << endl;
+	}
+	return 0;
+}
