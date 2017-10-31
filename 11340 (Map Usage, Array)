@@ -1,0 +1,39 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+int main()
+{
+	int tests;
+	while (cin >> tests)
+	{
+		for (int i = 0; i < tests; ++i) {
+			int n, cost;
+			cin >> n;
+			char letter;
+			map <char, int> prices;
+			for (int j = 0; j < n; ++j) {
+				cin >> letter >> cost;
+				prices[letter] = cost;
+			}
+			int lines;
+			int total_cost = 0;
+			cin >> lines;
+			string text;
+			for (int k = 0; k < lines + 1 ; ++k)
+			{
+				getline(cin, text);
+				for (int l = 0; l < text.size(); ++l)
+				{
+					if (prices.count(text[l]) == 1)
+						total_cost += prices[text[l]];
+				}
+			}
+			cout << fixed << setprecision(2) << double(total_cost)/100 <<'$'<< endl;
+		}
+	}
+	return 0;
+}
