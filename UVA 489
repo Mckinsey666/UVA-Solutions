@@ -1,0 +1,46 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	int n;
+	while (cin >> n)
+	{
+		if (n == -1)
+			break;
+		string answer, guess;
+		cin >> answer >> guess;
+		int correct_check = 0;
+		int wrong_check = 0;
+		int used[26] = { 0 };
+		for (int i = 0; i < guess.size(); ++i)
+		{
+			if (!used[guess[i] - 'a'])
+			{
+				used[guess[i] - 'a'] = 1;
+				int found_check = 0;
+	
+				for (int j = 0; j < answer.size(); ++j)
+					if (answer[j] == guess[i])
+						++found_check;
+
+				if (found_check == 0)
+					wrong_check++;
+				correct_check += found_check;
+
+				if (wrong_check == 7 || correct_check==answer.size())
+					break;
+			}
+		}
+		cout << "Round " << n << endl;
+		if (wrong_check == 7)
+			cout << "You lose." << endl;
+		else if (correct_check == answer.size())
+			cout << "You win." << endl;
+		else
+			cout << "You chickened out." << endl;
+	}
+	
+	return 0;
+}
