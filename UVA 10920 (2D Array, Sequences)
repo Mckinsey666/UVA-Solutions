@@ -1,0 +1,40 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	long long length, index;
+	while (cin >> length >> index)
+	{
+		if (length == 0)
+			break;
+		long long loop = 1;
+		while (index > (2*loop-1)*(2*loop-1))
+			loop += 1;
+		
+		long long start = (2 * loop - 3)*(2 * loop - 3) + 1;
+		long long set = 1, L = 2 * loop - 1;
+		while (index > start + L - 2)
+		{
+			++set;
+			start += L -1;
+		}
+		long long m = length / 2;
+		if (index == 1)
+			cout << "Line = " << m << ", column = " << m << '.' << endl;
+		else
+		{
+			long long d = index - start;
+
+			switch (set)
+			{
+			
+			}
+		}
+		cout << set << endl;
+	}
+	return 0;
+}
