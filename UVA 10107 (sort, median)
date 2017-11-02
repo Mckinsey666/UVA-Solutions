@@ -1,0 +1,24 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+	int n;
+	vector<int>numbers;
+	while (!(cin >> n).eof())
+	{
+		numbers.push_back(n);
+		sort(numbers.begin(), numbers.end());
+		if (numbers.size() % 2 == 1)
+		cout << numbers[ceil(numbers.size() / 2)] << endl;
+		else
+			cout << (numbers[numbers.size() / 2] + numbers[numbers.size() / 2 - 1]) / 2 << endl;
+	}
+	return 0;
+}
