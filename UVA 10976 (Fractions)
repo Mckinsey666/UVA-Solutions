@@ -1,0 +1,38 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+struct f
+{
+	int a;
+	int b;
+};
+int main()
+{
+	int n;
+	while (cin >> n)
+	{
+		vector<f>fractions;
+		for (int i = n + 1; i <= 2 * n; ++i)
+		{
+			if ((i*n)%(i-n) == 0)
+			{
+				int temp = i;
+				int j = i*n / (i - n);
+				if( temp < j)
+					swap(temp, j);
+				f frac = { temp,j };
+				fractions.push_back(frac);
+			}
+			
+		}
+		cout << fractions.size() << endl;
+		for(int i=0;i<fractions.size();++i)
+			cout << "1/" << n << " = 1/" << fractions[i].a << " + 1/" << fractions[i].b << endl;
+	}
+}
