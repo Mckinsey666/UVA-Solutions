@@ -1,0 +1,46 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+unsigned long long value(vector<int>&, int);
+
+int main()
+{
+	int cases;
+	while (cin >> cases)
+	{
+		for (int i = 0; i < cases; ++i)
+		{
+			int order, coef, d, k;
+			vector<int>poly;
+			cin >> order;
+			for (int j = 0; j <= order; ++j)
+			{
+				cin >> coef;
+				poly.push_back(coef);
+			}
+			cin >> d >> k;
+			int n = 1;
+			while (k > d)
+			{
+				++n;
+				d += n*d;
+			}
+			cout << value(poly, n) << endl;
+		}
+	}
+	return 0;
+}
+
+unsigned long long value(vector<int>& poly, int x)
+{
+	unsigned long long ret = poly[poly.size()-1];
+	for (int i = poly.size() - 1; i >= 1; --i)
+		ret = x*ret + poly[i - 1];
+	return ret;
+}
