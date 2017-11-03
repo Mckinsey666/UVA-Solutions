@@ -1,0 +1,59 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+struct prices
+{
+	string name;
+	int min;
+	int max;
+};
+
+int main()
+{
+	int cases;
+	while (cin >> cases)
+	{
+		int cars;
+		cin >> cars;
+		vector <prices> car_price;
+		int high, low;
+		string car_name;
+		for (int i = 0; i < cars; ++i)
+		{
+			cin >> car_name >> low >> high;
+			prices p = { car_name, low ,high };
+			car_price.push_back(p);
+		}
+
+		int test;
+		cin >> test;
+		int query;
+		for (int i = 0; i < test; ++i)
+		{
+			int chosen;
+			cin >> query;
+			int check = 0;
+			for (int j = 0; j < cars; ++j)
+			{
+				if (query >= car_price[j].min && query <= car_price[j].max)
+				{
+					chosen = j;
+					check++;
+				}
+			}
+			if (check == 1)
+				cout << car_price[chosen].name << endl;
+			else
+				cout << "UNDETERMINED" << endl;
+			
+		}
+		cout << endl;
+	}
+	return 0;
+}
