@@ -7,40 +7,58 @@
 
 using namespace std;
 
-unsigned long long value(vector<int>&, int);
+struct prices
+{
+	string name;
+	int min;
+	int max;
+};
 
 int main()
 {
 	int cases;
 	while (cin >> cases)
 	{
-		for (int i = 0; i < cases; ++i)
+		for (int k = 0; k < cases; ++k) 
 		{
-			int order, coef, d, k;
-			vector<int>poly;
-			cin >> order;
-			for (int j = 0; j <= order; ++j)
+			int cars;
+			cin >> cars;
+			vector <prices> car_price;
+			int high, low;
+			string car_name;
+			for (int i = 0; i < cars; ++i)
 			{
-				cin >> coef;
-				poly.push_back(coef);
+				cin >> car_name >> low >> high;
+				prices p = { car_name, low ,high };
+				car_price.push_back(p);
 			}
-			cin >> d >> k;
-			int n = 1;
-			while (k > d)
+
+			int test;
+			cin >> test;
+			int query;
+			for (int i = 0; i < test; ++i)
 			{
-				++n;
-				d += n*d;
+				int chosen;
+				cin >> query;
+				int check = 0;
+				for (int j = 0; j < cars; ++j)
+				{
+					if (query >= car_price[j].min && query <= car_price[j].max)
+					{
+						chosen = j;
+						check++;
+					}
+				}
+				if (check == 1)
+					cout << car_price[chosen].name << endl;
+				else
+					cout << "UNDETERMINED" << endl;
+
 			}
-			cout << value(poly, n) << endl;
+
+			if(k<cases-1)
+				cout << '\n';
 		}
 	}
 	return 0;
-}
-
-unsigned long long value(vector<int>& poly, int x)
-{
-	unsigned long long ret = poly[poly.size()-1];
-	for (int i = poly.size() - 1; i >= 1; --i)
-		ret = x*ret + poly[i - 1];
-	return ret;
 }
