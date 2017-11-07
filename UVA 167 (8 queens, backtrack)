@@ -1,0 +1,68 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+void max8queens(int, bool[8], bool[15], bool[15], bool[8][8], int[8][8], int&);
+
+int main()
+{
+	int n;
+	while (cin >> n)
+	{
+		for (int i = 0; i < n; ++i)
+		{
+			bool column[8] = { 0 };
+			bool right_diag[15] = { 0 };
+			bool left_diag[15] = { 0 };
+			bool queens[8][8] = { 0 };
+			int sultan[8][8];
+
+			for (int a = 0; a < 8; ++a)
+				for (int b = 0; b < 8; ++b)
+					cin >> sultan[a][b];
+			
+			int max_sum = 0;
+			max8queens(0, column, right_diag, left_diag, queens, sultan,max_sum);
+			cout << setw(5)<<max_sum << endl;
+		}
+	}
+	return 0;
+}
+
+void max8queens(int row, bool column[8], bool right_diag[15], bool left_diag[15], bool queens[8][8], int sultan[8][8], int& max_sum)
+{
+	if (row == 8) {
+		int sum = 0;
+		for (int i = 0; i < 8; ++i)
+			for (int j = 0; j < 8; ++j)
+				if (queens[i][j])
+					sum += sultan[i][j];
+		if (sum > max_sum)
+			max_sum = sum;
+	}
+
+	for (int col = 0; col < 8; ++col)
+	{
+		if (!column[col] && !right_diag[row + col] && !left_diag[row - col + 7])
+		{
+			column[col] =
+			right_diag[row + col] =
+			left_diag[row - col + 7] =
+			queens[row][col] = 1;
+
+			max8queens(row + 1, column, right_diag, left_diag, queens, sultan, max_sum);
+
+			column[col] =
+			right_diag[row + col] =
+			left_diag[row - col + 7] =
+			queens[row][col] = 0;
+		}
+	}
+	return;
+}
