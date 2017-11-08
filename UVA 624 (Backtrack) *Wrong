@@ -1,0 +1,58 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+void best_track(int, long long[20], int[20], int[20],long long&, long long&);
+
+int main()
+{
+	long long max_time;
+	int n;
+	while (!(cin >> max_time).eof())
+	{
+		long long tracks[20] = { 0 };
+		int best[20] = { 0 };
+		int used[20] = { 0 };
+		cin >> n;
+		for (int i = 0; i < n; ++i)
+			cin >> tracks[i];
+		long long best_sum = 0;
+		best_track(n, tracks, best, used, best_sum, max_time);
+		for (int i = 0; i < n; ++i)
+			if (best[i])
+				cout << tracks[i] << ' ';
+		cout << "sum:" << best_sum << endl;
+	}
+	return 0;
+}
+
+void best_track(int n, long long tracks[20], int best[20], int used[20], long long &best_sum, long long& max_time)
+{
+	if (n==-1)
+	{
+		long long sum = 0;
+		for (int i = 0; i < 20; ++i)
+			if (used[i])
+				sum += tracks[i];
+		if (sum<=max_time&&((max_time-sum)<(max_time-best_sum)))
+		{
+			best_sum = sum;
+			for (int i = 0; i < 20; ++i)
+				best[i] = used[i];
+		}
+	}
+	if (n >= 0)
+	{
+		used[n - 1] = 1;
+		best_track(n - 1, tracks, best, used, best_sum, max_time);
+		used[n - 1] = 0;
+		best_track(n - 1, tracks, best, used, best_sum, max_time);
+	}
+	return;
+}
