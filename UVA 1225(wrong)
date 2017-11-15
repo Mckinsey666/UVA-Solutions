@@ -1,0 +1,33 @@
+#include <cstdio>
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+using namespace std;
+
+
+int main()
+{
+	int n,m;
+	while (cin >> n)
+	{
+		for (int j = 0; j < n; ++j) {
+			int ct[10] = { 0 };
+			cin >> m;
+			for (int i = 1; i <= m; ++i)
+			{
+				int temp = i;
+				while (temp != 0)
+				{
+					ct[temp % 10]++;
+					temp /= 10;
+				}
+
+			}
+			for (int i = 0; i < 9; ++i)
+				cout << ct[i] << ' ';
+			if(j!=n-1) cout << endl;
+		}
+	}
+	return 0;
+}
