@@ -24,9 +24,10 @@ int main()
 				}
 
 			}
-			for (int i = 0; i < 9; ++i)
+			for (int i = 0; i <=9; ++i)
 				cout << ct[i] << ' ';
-			if(j!=n-1) cout << endl;
+			if(j!=n-1)
+				cout << endl;
 		}
 	}
 	return 0;
