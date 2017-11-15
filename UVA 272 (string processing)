@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+void process(string& s,int& ct);
+
+int main()
+{
+	string s;
+	int ct = 0;
+	while (getline(cin, s))
+	{
+		process(s,ct);
+		cout << s << endl;
+	}
+    return 0;
+}
+
+void process(string& s,int& ct)
+{
+	int i;
+	while ((i = s.find('"')) != -1) {
+		s.erase(i, 1);
+		if (ct % 2 == 0)
+			s.insert(i, "``");
+		else
+			s.insert(i, "''");
+		++ct;
+	}
+	return;
+}
