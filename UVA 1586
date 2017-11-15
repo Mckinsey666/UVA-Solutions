@@ -1,0 +1,35 @@
+#include <cstdio>
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+using namespace std;
+
+
+int main()
+{
+	map<char, double> mass[4];
+	mass['C'] = 12.01; mass['H'] = 1.008; mass['O'] = 16.00; mass[N] = 14.01;
+	int cases;
+	while (cin >> cases)
+	{
+		char c;
+		for (int i = 0; i < cases; ++i)
+		{
+			map<char, int> m;
+			string molecule;
+			int n = 1;
+			char c;
+			cin >> molecule;
+			for (int j = 0; j < molecule.size(); ++j)
+			{
+				if (isalpha(molecule[j]))
+					c = molecule[j];
+
+			}
+			
+			
+		}
+	}
+	return 0;
+}
