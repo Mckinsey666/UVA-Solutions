@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+using namespace std;
+
+bool check(string&, int);
+
+int main()
+{
+	int n;
+	while (!(cin >> n).eof())
+	{
+		string s;
+		for (int i = 0; i < n; ++i)
+		{
+			cin >> s;
+				for (int j = 1; j <= s.size(); ++j){
+					if (s.size() % j == 0 && check(s, j)) {
+						cout << j<<"\n";
+						break;
+					}
+				}
+				if (i != n - 1)
+					cout << "\n";
+		}
+	}
+	return 0;
+}
+
+bool check(string& s, int l)
+{
+	for (int i = 1; i < s.size() / l; ++i)
+		for (int j = i*l; j < (i + 1)*l; ++j)
+			if (s[j] != s[j%l])
+				return false;
+	return true;
+}
+//Output format...
