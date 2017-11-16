@@ -3,32 +3,36 @@
 #include <string>
 #include <map>
 #include <cctype>
-using namespace std;
+#include <vector>
+#include <stack>
+#include <queue>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#define rep(i,a,b) for(int i=a;i<b;++i)
 
+
+using namespace std;
 
 int main()
 {
-	int n,m;
-	while (cin >> n)
-	{
-		for (int j = 0; j < n; ++j) {
-			int ct[10] = { 0 };
-			cin >> m;
-			for (int i = 1; i <= m; ++i)
-			{
+	int n, a;
+	while (cin >> n) {
+		while (n--) {
+			cin >> a;
+			int count[10] = { 0 };
+			rep(i, 1, a + 1) {
 				int temp = i;
-				while (temp != 0)
-				{
-					ct[temp % 10]++;
+				while (temp != 0) {
+					count[temp % 10]++;
 					temp /= 10;
 				}
-
 			}
-			for (int i = 0; i <=9; ++i)
-				cout << ct[i] << ' ';
-			if(j!=n-1)
-				cout << endl;
+			rep(i, 0, 10)
+				(i != 9) ? cout << count[i] << ' ': cout << count[i];
+			cout << '\n';
 		}
 	}
 	return 0;
 }
+//Be careful of output format
