@@ -1,0 +1,52 @@
+#include <cstdio>
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <cstring>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+
+using namespace std;
+
+int main()
+{
+	int n;
+	int k = 1;
+	while (cin >> n) {
+		if (n == 0)
+			break;
+		cout << "Game " << k << ":\n";
+		int* ans = new int[n];
+		rep(i,0,n)
+			cin >> ans[i];
+
+		int* test = new int[n];
+		while (1) {
+			rep(i, 0, n)
+				cin >> test[i];
+			if (!test[0])
+				break;
+
+			int correct = 0;
+			int ans_total[10] = { 0 };
+			int test_total[10] = { 0 };
+			rep(i, 0, n)
+				if (test[i] == ans[i]) 
+					correct++;
+			rep(i, 0, n) {
+				ans_total[ans[i]]++;
+				test_total[test[i]]++;
+			}
+			int ct = 0;
+			rep(i, 0, 10)
+				ct += min(ans_total[i], test_total[i]);
+			cout <<"    (" << correct << ',' << ct-correct << ')' << '\n';
+		}
+		++k;
+	}
+	return 0;
+}
