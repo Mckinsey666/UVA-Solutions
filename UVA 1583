@@ -1,0 +1,37 @@
+#include <iostream>
+#include <cmath>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+
+using namespace std;
+
+int generator(int);
+int main()
+{
+	int n, i;
+	int g[100001];
+	rep(i, 1, 100001)
+		g[i] = generator(i);
+	while (cin >> n) {
+		while (n--) {
+			cin >> i;
+			cout << g[i] << '\n';
+		}
+	}
+	return 0;
+}
+
+int generator(int n)
+{
+	//It is crucial to decide which number to start checking in order to avoid TLE
+	rep(i, n-9*(log10(n)), n) {
+		int s = i, temp = i;
+		while (temp != 0) {
+			s += temp % 10;
+			temp /= 10;
+		}
+		if (s == n)
+			return i;
+	}
+	return 0;
+}
