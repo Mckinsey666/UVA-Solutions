@@ -1,0 +1,26 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+
+using namespace std;
+
+int main()
+{
+	int n;
+	string s;
+	while(cin>>n)
+		while (n--) {
+			cin >> s;
+			int l = s.size();
+			string check = s, ans = s;;
+			do {
+				check.insert(check.begin(), check[l - 1]);
+				check.erase(check.end()-1);
+				ans = min(check, ans);
+			} while (check != s);
+			cout << ans << endl;
+		}
+	return 0;
+}
