@@ -1,0 +1,33 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <map>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+
+void process(string&);
+int main()
+{
+	string code, orig;
+	while (!(cin >> code >> orig).eof()) {
+		int ct1[26] = { 0 };
+		int ct2[26] = { 0 };
+		rep(i, 0, code.size()) {
+			ct1[code[i] - 'A']++;
+			ct2[orig[i] - 'A']++;
+		}
+		sort(ct1, ct1 + 26);
+		sort(ct2, ct2 + 26);
+		int flag = 1;
+		rep(i, 0, 26) {
+			if (ct1[i] != ct2[i]) {
+				flag = 0;
+				break;
+			}
+		}
+		cout << ((flag) ? "YES\n" : "NO\n");
+	}
+	return 0;
+}
