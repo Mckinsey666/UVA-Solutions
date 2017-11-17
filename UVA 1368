@@ -1,0 +1,53 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+
+int main()
+{
+	int cases;
+	while (cin >> cases) {
+		while (cases--) {
+			int m, n;
+			cin >> m >> n;
+			vector <string> DNA;
+			string seq;
+			rep(i, 0, m) {
+				cin >> seq;
+				DNA.push_back(seq);
+			}
+			//ACGT, 0123
+			string hamming = "";
+			int error = 0;
+			rep(i, 0, n) {
+				int ct[4] = { 0 };
+				rep(j, 0, m) {
+					switch ((DNA[j])[i]) {
+					case 'A': ct[0]++; break;
+					case 'C': ct[1]++; break;
+					case 'G': ct[2]++; break;
+					case 'T': ct[3]++; break;
+					}
+				}
+				int max = -1, k;
+				rep(t,0,4)
+					if (ct[t] > max) {
+						max = ct[t];
+						k = t;
+					}
+				error += (m - max);
+				switch (k) {
+				case 0: hamming += 'A'; break;
+				case 1: hamming += 'C'; break;
+				case 2: hamming += 'G'; break;
+				case 3: hamming += 'T'; break;
+				}
+			}
+			cout << hamming << '\n' << error << '\n';
+		}
+	}
+	return 0;
+}
