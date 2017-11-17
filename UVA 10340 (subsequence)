@@ -1,0 +1,29 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+
+int main()
+{
+	string s, t;
+	while (!(cin >> s >> t).eof()) {
+		if (s.size() > t.size())
+			cout << "No\n";
+		else if (s.size() == t.size())
+			cout << ((s == t) ? "Yes\n" : "No\n");
+		//s.length < t.length, s is a potential subsequence
+		else {
+			int j = 0, i = 0;
+			while(j<t.size()){
+				if (t[j] == s[i]) 
+					 ++i;
+				++j;
+			}
+			cout << ((i == s.size()) ? "Yes\n" : "No\n");
+		}
+	}
+	return 0;
+}
