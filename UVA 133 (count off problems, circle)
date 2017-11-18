@@ -1,0 +1,50 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <cstring>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+using namespace std;
+
+int people[20], n;
+int move(int n, int k, int o);//o is the orientation flag
+
+int main()
+{
+	int k, m;
+	while (cin >> n >> k >> m) {
+		if (n == 0)
+			break;
+		for (int i = 1; i <= n; ++i)
+			people[i] = i;
+		int a = n, b = 1;
+		int left = n;
+		while (left) {
+			a = move(a, 1, k);
+			b = move(b, -1, m);
+			cout <<setw(3)<< a; left--;
+			if (b != a) {
+				cout << setw(3)<< b;
+				left--;
+			}
+			people[a] = people[b] = 0;
+			if (left) cout << ',';
+		}
+		cout << '\n';
+	}
+	return 0;
+}
+int move(int i, int o, int t) {
+	while (t--) {
+		do {
+			if (o == 1)
+				i = ((i == n) ? 1 : (i + 1));
+			else
+				i = ((i == 1) ? n : (i - 1));
+		} while (!people[i]);
+	}
+	return i;
+}
