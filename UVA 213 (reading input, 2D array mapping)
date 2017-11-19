@@ -1,0 +1,67 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <cstring>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+using namespace std;
+
+char c;
+char mapping[8][127];
+bool readheader();
+int readint(int);
+
+int main()
+{
+	while (readheader()) {
+		int l;
+		while (1) {
+			if (!(l=readint(3))) {
+				c = getchar();//get endline character after 000
+				break;
+			}
+			while (1) {
+				int i = readint(l);
+				if (i == ((1 << l) - 1))
+					break;
+				cout << mapping[l][i];
+			}
+		}
+		cout << '\n';
+	}
+	return 0;
+}
+
+int readint(int l)
+{
+	int i = 0;
+	while (1) {
+		if ((c = getchar()) != '\n') {
+			i = i * 2 + c - '0';
+			--l;
+		}
+		if (!l)
+			break;
+	}
+	return i;
+}
+bool readheader() {
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 127; ++j)
+			mapping[i][j] = '0';
+	int i = 1, j = 0;
+	while ((c = getchar()) != '\n') {
+		if (c == EOF)
+			return false;
+		mapping[i][j] = c;
+		++j;
+		if (j > ((1<<i)-2)) {
+			i++;
+			j = 0;
+		}
+	}
+	return true;
+}
