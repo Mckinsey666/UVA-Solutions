@@ -1,0 +1,69 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+using namespace std;
+
+struct contest {
+	int solved[10] = { 0 };
+	int tries[10] = { 0 };
+	int total = 0;
+	int penalty = 0;
+	int team = 0;
+};
+
+bool comp (contest a, contest b)
+{
+	if (a.total > b.total) return true;
+	else if (a.total == b.total) {
+		if (a.penalty < b.penalty) 
+			return true;
+		else if (a.penalty == b.penalty) 
+			if (a.team < b.team) return true;
+	}
+	return false;
+}
+
+char c;
+int main() {
+	int t;
+	while (!(cin >> t).eof()) {
+		c = getchar(); c = getchar();//get 2 new line characters
+		while (t--) {
+			contest score[101];
+			int c, p, time;
+			char status;
+			string s;
+			while (getline(cin, s) && s != "") {
+				stringstream temp(s);
+				temp >> c >> p >> time >> status;
+				score[c].team = c;
+				if (!score[c].solved[p]) {
+					if (status == 'C') {
+						score[c].penalty += time + (score[c].tries[p]) * 20;
+						score[c].solved[p] = 1;
+						score[c].total++;
+					}
+					else if (status == 'I') {
+						score[c].tries[p] += 1;
+					}
+				}
+			}
+			vector<contest>board;
+			for (int i = 0; i < 101; ++i)
+				if (score[i].team)
+					board.push_back(score[i]);
+			sort(board.begin(), board.end(), comp);
+			for (int i = 0; i < board.size(); ++i)
+				cout << board[i].team << ' ' << board[i].total << ' ' << board[i].penalty << '\n';
+			if(t>0)
+				cout << '\n';
+		}
+	}
+	return 0;
+}
