@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
+#include <cctype>
+using namespace std;
+string processed(string);
+int main()
+{
+	string s;
+	vector <string> dict;
+	map <string,int> words;
+	while (!(cin >> s).eof()) {
+		s = processed(s);
+		if (words.count(s) != 1) {
+			words[s] = 1;
+			dict.push_back(s);
+		}
+		sort(dict.begin(), dict.end());
+	}
+	for (int i = 0; i < dict.size(); ++i)
+		cout << dict[i] << '\n';
+	return 0;
+}
+string processed(string s) {
+	string ps = "";
+	for (int i = 0; i < s.size(); ++i)
+		if (isalpha(s[i]))
+			ps += tolower(s[i]);
+	return ps;
+}
+//TLE using vector+map-->try sorting in place, use set which only contains distinct values and sorts in place.
