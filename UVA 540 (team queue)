@@ -1,0 +1,52 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <map>
+#include <cstring>
+#include <set>
+#include <queue>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+
+using namespace std;
+
+int main() {
+	int i = 1, t;
+	while (cin >> t&&t != 0) {
+		map<int, int>team;
+		//Assign students to teams
+		while(t--){
+			int n,ID;
+			cin >> n;
+			while(n--){
+				cin >> ID;
+				team[ID] = t;
+			}
+		}
+		queue<int> teamline, line[maxn];
+		string move;
+		cout << "Scenario #" << i << '\n';
+		while ((cin >> move)&&(move[0] != 'S')) {
+			if (move[0] == 'D') {
+				int t = teamline.front();
+				cout << line[t].front() << '\n';
+				line[t].pop();
+				if (line[t].empty()) teamline.pop();
+			}
+			else
+			{
+				int x;
+				cin >> x;
+				int t = team[x];
+				if (line[t].empty()) 
+					teamline.push(t);
+				line[t].push(x);
+			}
+		}
+		cout << '\n';
+		++i;
+	}
+	return 0;
+}
