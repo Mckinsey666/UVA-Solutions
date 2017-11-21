@@ -1,0 +1,55 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <cmath>
+#include <cstring>
+#include <map>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+typedef long long ll;
+using namespace std;
+
+
+int main() {
+	ll fibo[100] = {};
+	fibo[1] = 1; fibo[2] = 2;
+	for (int i = 3; i < 100; ++i)
+		fibo[i] = fibo[i - 1] + fibo[i - 2];
+	map<ll, int>index;
+	for (int i = 1; i < 100; ++i)
+		index[fibo[i]] = i;
+	int t;
+	while (cin >> t) {
+		while (t--) {
+			int n;
+			cin >> n;
+			ll num;
+			vector<ll>cv;
+			ll _max = 0;
+			for (int i = 0; i < n; ++i) {
+				cin >> num;
+				_max = max(num, _max);
+				cv.push_back(index[num]);
+			}
+			char code[100];
+			memset(code, ' ', sizeof(code));
+			string s;
+			getline(cin, s);  getline(cin, s);
+			int j = 0;
+			for (int i = 0; i < s.size(); ++i) {
+				if (isupper(s[i]))
+					code[cv[j++]] = s[i];
+				if (j == n)
+					break;
+			}
+			for(int i=1;i<=index[_max];++i)
+				cout << code[i];
+			cout <<'\n';
+		}
+	}
+	return 0;
+}
