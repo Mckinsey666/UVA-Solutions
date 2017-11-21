@@ -1,0 +1,44 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <cmath>
+#include <cstring>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+typedef long long ll;
+using namespace std;
+
+int main() {
+	int t;
+	char c;
+	while (cin >> t) {
+		c = getchar();
+		while (t--) {
+			char heir[10][82] = {0};
+
+			int m;
+			for (int i = 0; i < 10; ++i) {
+				m = 0;
+				while ((c = getchar()) != '\n')
+					heir[i][m++] = c;
+			}
+			c = getchar();
+			int code;
+			m = 1;
+			while (heir[0][m+1] != '\0') {
+				code = 0;
+				for (int i = 1; i <= 8; ++i)
+					if (heir[i][m] == '\\')
+						code += pow(2, i-1);
+				cout << char(code);
+				++m;
+			}
+			cout << '\n';
+		}
+	}
+	return 0;
+}
