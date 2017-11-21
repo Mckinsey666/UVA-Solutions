@@ -1,0 +1,64 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <cmath>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+typedef long long ll;
+using namespace std;
+
+ll bino(int n, int k);
+int main() {
+	int t;
+	while (cin >> t) {
+		int i = 1;
+		while (t--) {
+			char c;
+			string a="", b="";
+			int p;
+			c = getchar(); c = getchar();
+			while ((c = getchar())&&(c!= '+'))
+				a += c;
+			while ((c = getchar()) && (c != ')'))
+				b += c;
+			c = getchar();
+			cin >> p;
+			cout << "Case " << i << ": ";
+			cout << a;
+			if (p != 1)
+				cout << '^' << p;
+			cout<<'+';
+			for (int i = p-1; i >= 1; --i) {
+				cout << bino(p, i) << '*';
+				cout << a;
+				if (i != 1)
+					cout << '^' << i;
+				cout<< '*';
+				cout << b;
+				if (p - i != 1)
+					cout << '^' << p - i;
+				cout<< '+';
+			}
+			cout << b;
+			if (p != 1)
+				cout<< '^' << p;
+			cout << '\n';
+			++i;
+		}
+	}
+	return 0;
+}
+
+ll bino(int n, int k)
+{
+	ll ans = 1;
+	for (int i = 1; i <= k; ++i) {
+		ans *= n - i + 1;
+		ans /= i;
+	}
+	return ans;
+}
