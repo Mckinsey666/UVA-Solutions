@@ -1,0 +1,23 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <cmath>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+
+int main() {
+	int n, k;
+	while (cin >> n >> k) {
+		double long d = 0;
+		for (int i = n; i >= k + 1; --i) 
+			d += (log10(double(i)/double(i-k)));
+		cout <<floor(int(d))+1 << '\n';
+	}
+	return 0;
+}
+//TLE trap
