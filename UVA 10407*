@@ -1,0 +1,31 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <cmath>
+#include <cstring>
+#include <map>
+#include <set>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+typedef long long ll;
+using namespace std;
+
+
+int main() {
+	int n;
+	while (cin >> n&&n!=0) {
+		vector<int>num;
+		num.push_back(n);
+		while (cin >> n&&n != 0)
+			num.push_back(n);
+		set<int>diff;
+		for (int i = 0; i < num.size(); ++i)
+			for (int j = i + 1; j < num.size(); ++j)
+				diff.insert(abs(num[i] - num[j]));
+	}
+	return 0;
+}
