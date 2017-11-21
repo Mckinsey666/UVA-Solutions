@@ -1,0 +1,38 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <cmath>
+#include <cstring>
+#include <map>
+#define maxn 1000
+#define rep(i,a,b) for(int i=a;i<b;++i)
+typedef long long ll;
+using namespace std;
+
+int main() {
+	int L;
+	string code;
+	while (cin >> L >> code) {
+		map<string, int> key;
+		vector<string>keys;
+		for (int i = 0; i <= code.size() - L; ++i) {
+			string s = code.substr(i, L);
+			key[s]++;
+		}
+		int _max = 0;
+		for (map<string, int>::iterator i = key.begin(); i != key.end(); ++i)
+			_max = max(_max, i->second);
+		string ans;
+		for (map<string, int>::iterator i = key.begin(); i != key.end(); ++i)
+			if (i->second == _max) {
+				ans = i->first;
+				break;
+			}
+		cout << ans << '\n';
+	}
+	return 0;
+}
