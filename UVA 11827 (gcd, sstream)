@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+using namespace std;
+
+int gcd(int, int);
+int main()
+{
+	int t;
+	while (cin >> t) {
+		char c = getchar();
+		while (t--) {
+			string s;
+			getline(cin, s);
+			stringstream ss(s);
+			int n;
+			vector<int>num;
+			while (ss >> n)
+				num.push_back(n);
+			int max_gcd = 0;
+			for (int i = 0; i < num.size(); ++i)
+				for (int j = i + 1; j < num.size(); ++j)
+					max_gcd = max(max_gcd, gcd(num[i], num[j]));
+			cout << max_gcd << '\n';
+		}
+	}
+	return 0;
+}
+
+int gcd(int m, int n)
+{
+	if (n == 0)
+		return m;
+	return gcd(n, m%n);
+}
