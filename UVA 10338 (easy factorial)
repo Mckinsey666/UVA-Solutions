@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <cstring>
+#include <iomanip>
+#include <map>
+using namespace std;
+
+long long fact(int n);
+int main() {
+	int t;
+	while (cin >> t) {
+		int i = 1;
+		while (t--) {
+			string s;
+			cin >> s;
+			map<char, int>ct;
+			int l = s.size();
+			for (int i = 0; i < l; ++i)
+				ct[s[i]]++;
+			vector<int>cur;
+			for (auto i = ct.begin(); i != ct.end(); ++i)
+				cur.push_back(i->second);
+			long long ans = fact(l);
+
+			for (int i = 0; i < cur.size(); ++i)
+				ans /= fact(cur[i]);
+			cout <<"Data set "<<i++<<": "<<ans <<'\n';
+
+		}
+	}
+	return 0;
+}
+
+long long fact(int n) {
+	long long ret = 1;
+	for (int i = 2; i <= n; ++i)
+		ret *= i;
+	return ret;
+}
