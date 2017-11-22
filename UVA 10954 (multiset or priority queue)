@@ -1,0 +1,45 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <cstring>
+#include <iomanip>
+#include <map>
+#include <stack>
+#include <vector>
+#include <set>
+#include <queue>
+using namespace std;
+typedef multiset<int>::iterator it;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int n;
+	while (cin >> n) {
+		if (n == 0)
+			break;
+		multiset<int>add;
+		int num;
+		while (n--) {
+			cin >> num;
+			add.insert(num);
+		}
+		int total = 0;
+		while (add.size() != 1) {
+			int sum = 0;
+			it mn = add.begin();
+			sum += *mn;
+			add.erase(mn);
+			mn = add.begin();
+			sum += *mn;
+			add.erase(mn);
+			total += sum;
+			add.insert(sum);
+		}
+		cout << total << endl;
+	}
+	return 0;
+}
