@@ -1,0 +1,136 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <cstring>
+#include <iomanip>
+using namespace std;
+
+class bignum {
+	friend ostream& operator<<(ostream&, bignum&);
+	friend istream& operator>>(istream&, bignum&);
+public:
+	bignum(int l = 1) :len(l) {};
+	bignum(const bignum&);
+	~bignum() {};
+
+	bignum operator+ (const bignum&);
+	bignum operator* (const bignum&);
+	const bignum& operator= (const bignum&);
+	void digitcount();
+	void showcount();
+private:
+	vector<int>n;
+	int len;
+	int ct[10] = { 0 };
+};
+
+//Copy constructor for bignum
+bignum::bignum(const bignum& num) {
+	len = num.len;
+	for (int i = 0; i < len; ++i)
+		n.push_back(num.n[i]);
+}
+
+const bignum& bignum::operator=(const bignum& num) {
+	if (&num != this) {
+		if (len != num.len) {
+			len = num.len;
+			n.resize(len);
+		}
+		for (int i = 0; i < len; ++i)
+			n[i] = num.n[i];
+	}
+	return *this;
+}
+
+bignum bignum::operator+(const bignum& add) {
+	bignum sum(max(len, add.len) + 1);
+	sum.n.resize(sum.len);
+	//Performing addition
+	bignum a(*this);
+	bignum b(add);
+	a.len = sum.len; b.len = sum.len;
+	a.n.resize(sum.len); b.n.resize(sum.len);
+	for (int i = 0; i < sum.len - 1; ++i) {
+		int part = a.n[i] + b.n[i];
+		sum.n[i] += part;
+		sum.n[i + 1] += sum.n[i] / 10;
+		sum.n[i] %= 10;
+	}
+	return sum;
+}
+
+bignum bignum::operator*(const bignum& num) {
+	bignum product(num.len + len + 1);
+	product.n.resize(product.len);
+	for (int i = 0; i < len; ++i)
+		for (int j = 0; j < num.len; ++j)
+			product.n[i + j] += n[i] * num.n[j];
+	for (int i = 0; i < product.len - 1; ++i) {
+		product.n[i + 1] += product.n[i] / 10;
+		product.n[i] %= 10;
+	}
+	return product;
+}
+
+void bignum::digitcount() {
+	int j = len - 1;
+	while (n[j] == 0)
+		--j;
+	for (int i = j; i >= 0; --i)
+		ct[n[i]]++;
+}
+
+void bignum::showcount() {
+	for (int i = 0; i < 5; ++i)
+		cout << "   (" << i << ")" << setw(5) << ct[i];
+	cout << '\n';
+	for (int i = 5; i < 10; ++i)
+		cout << "   (" << i << ")" << setw(5) << ct[i];
+	cout << '\n';
+}
+istream& operator>>(istream& input, bignum& num) {
+	string s;
+	input >> s;
+	num.len = s.size();
+	//Important! Reset num.
+	num.n.clear();
+	for (int i = num.len - 1; i >= 0; --i)
+		num.n.push_back(s[i] - '0');
+	return input;
+}
+
+ostream& operator<<(ostream& output, bignum& num) {
+	int j = num.len - 1;
+	while (num.n[j] == 0)
+		--j;
+	for (int i = j; i >= 0; --i)
+		output << num.n[i];
+	return output;
+}
+
+int main()
+{
+	int n;
+	while (cin >> n) {
+		stringstream one;
+		one << 1;
+		bignum fact;
+		one >> fact;
+		cout << n << "! --\n";
+		for (int i = 1; i <= n; ++i) {
+			stringstream ss;
+			ss << i;
+			bignum x;
+			ss >> x;
+			fact = fact*x;
+		}
+		fact.digitcount();
+		fact.showcount();
+		
+	}
+	return 0;
+}
