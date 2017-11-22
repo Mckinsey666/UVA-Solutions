@@ -1,0 +1,29 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+bool find(int, int&, int&);
+int main()
+{
+	int n;
+	while (cin >> n) {
+		if (n < 0)
+			break;
+		int i = 0, j = 0;
+		if (find(n, i, j))
+			cout << n << " = " << i << " + ... + " << j << '\n';
+		else
+			cout << n << " = " << n << " + ... + " << n << '\n';
+	}
+	return 0;
+}
+bool find(int n, int& i, int& j) {
+	for (i = 1; i <= n; ++i) {
+		int del = 1 - 4 * i + 4 * i*i + 8 * n;
+		if ((int)sqrt(del)*(int)sqrt(del) == del) {
+			j = (-1 + int(sqrt(del))) / 2;
+			return true;
+		}
+	}
+	return false;
+}
