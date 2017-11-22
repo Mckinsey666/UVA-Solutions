@@ -1,0 +1,46 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <cstring>
+#include <iomanip>
+#include <map>
+#include <stack>
+#include <vector>
+using namespace std;
+
+int main() {
+	int n;
+	while (cin >> n) {
+		if (n == 0)
+			break;
+		map<string, int> pop;
+		while (n--) {
+			vector<string>cv;
+			string course;
+			for (int i = 0; i < 5; ++i) {
+				cin >> course;
+				cv.push_back(course);
+			}
+			sort(cv.begin(), cv.end());
+			course = "";
+			for (int i = 0; i < 5; ++i)
+				course += cv[i];
+			pop[course]++;
+		}
+		int _max = 0;
+		int total;
+		for (auto i = pop.begin(); i != pop.end(); ++i) {
+			if (_max != i->second) {
+				_max = max(_max, i->second);
+				total = 1;
+			}
+			else
+				total++;
+		}
+		cout << _max*total << '\n';
+	}
+	return 0;
+}
