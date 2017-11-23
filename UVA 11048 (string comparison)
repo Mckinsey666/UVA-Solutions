@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool misspell(string&, string&, vector<string>&);
+int main()
+{
+	int n, m;
+	string word;
+	while (cin >> n) {
+		map<string, int>check;//uses map to enhance searching performance
+		vector<string>dict;
+		vector<string>words;
+		while (n--) {
+			cin >> word;
+			dict.push_back(word);
+			check[word] = 1;
+		}
+		cin >> m;
+		while (m--) {
+			cin >> word;
+			if (check.count(word) == 1)
+				cout << word << " is correct\n";
+			else {
+				string correct;
+				if (misspell(word, correct, dict))
+					cout << word << " is a misspelling of " << correct << '\n';
+				else
+					cout << word << " is unknown\n";
+			}
+		}
+	}
+	return 0;
+}
+
+bool misspell(string& word, string& correct, vector<string>&dict) {
+	for (int j = 0; j < dict.size();++j) {
+		int n = dict[j].size(), m = word.size();
+		if (m==n) {
+			int ct = 0;
+			for (int i = 0; i < word.size(); ++i)
+				if (word[i] != dict[j][i])
+					++ct;
+			if (ct == 1) {
+				correct = dict[j];
+				return true;
+			}
+			if (ct == 2) {
+				for (int i = 0; i < word.size() - 1; ++i)
+					if (word[i] == dict[j][i + 1] && word[i + 1] == dict[j][i]&&(word[i]!=word[i+1])) {
+						correct = dict[j];
+						return true;
+				}
+			}
+		}
+		else if (m == n - 1) {
+			for (int i = 0; i < n; ++i) {
+				string temp = dict[j];
+				temp.erase(i, 1);
+				if (temp == word) {
+					correct = dict[j];
+					return true;
+				}
+			}
+		}
+		else if (m == n + 1) {
+			for (int i = 0; i < m; ++i) {
+				string temp = word;
+				temp.erase(i, 1);
+				if (temp == dict[j]) {
+					correct = dict[j];
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
