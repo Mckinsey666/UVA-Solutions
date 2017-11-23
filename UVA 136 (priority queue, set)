@@ -1,0 +1,33 @@
+#include <iostream>
+#include <set>
+#include <map>
+#include <queue>
+#include <functional>
+#include <vector>
+using namespace std;
+typedef long long ll;
+typedef set<ll>::iterator it;
+
+int main() {
+	const int ugly[3] = { 2,3,5 };
+	priority_queue<ll, vector<ll>, greater<ll> >ugly_num;
+	set <ll> check;
+	ugly_num.push(1);
+	check.insert(1);
+	for(int i=1;;i++) {
+		ll x = ugly_num.top();
+		ugly_num.pop();
+		if (i == 1500) {
+			cout << "The 1500'th ugly number is " << x << ".\n";
+			break;
+		}
+		for (int j = 0; j < 3; ++j) {
+			ll y = x*ugly[j];
+			if (!check.count(y)) {
+				check.insert(y);
+				ugly_num.push(y);
+			}
+		}
+	}
+	return 0;
+}
