@@ -1,0 +1,93 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+
+using namespace std;
+
+void process(string&);
+void newcode(string&);
+int main()
+{
+	int n;
+	while (cin >> n) {
+		char temp = getchar();
+		while (n--) {
+			string key, code;
+			getline(cin, key); getline(cin, code);
+			process(key); process(code); newcode(code);
+			cout << code << endl;
+			map<char, int>used;
+			char keymap[5][5];
+			int k = 0;
+			for (int j = 0; j < key.size(); ++j) {
+				if (used.count(key[j]) != 1) {
+					keymap[k / 5][k % 5] = key[j];
+					used[key[j]] = 1;
+					++k;
+				}
+			}
+			char c = 'A';
+			while (k != 25) {
+				if (used.count(c) != 1&&c!='Q') {
+					keymap[k / 5][k % 5] = c;
+					used[c] = 1;
+					++k;
+				}
+				c = char(c + 1);
+			}
+			for (int i = 0; i < 24; ++i)
+				used[keymap[i / 5][i % 5]] = i;
+			for (int i = 0; i < code.size() - 1; i += 2) {
+				int x1 = used[code[i]] / 5, x2 = used[code[i + 1]] / 5,
+					y1 = used[code[i]] % 5, y2 = used[code[i + 1]] % 5;
+				if (x1 == x2) {
+					putchar(keymap[x1][(y1 + 1) % 5]);
+					putchar(keymap[x2][(y2 + 1) % 5]);
+				}
+				else if(y1 == y2) {
+					putchar(keymap[(x1 + 1) % 5][y1]);
+					putchar(keymap[(x2 + 1) % 5][y2]);
+				}
+				else {
+					putchar(keymap[x1][y2]);
+					putchar(keymap[x2][y1]);
+				}
+			}
+			if(n>0)
+				putchar('\n');
+		}
+	}
+    return 0;
+}
+
+void process(string& s) {
+	while (s.find(' ') != -1) 
+		s.erase(s.find(' '), 1);
+	for (int i = 0; i < s.size(); ++i)
+		s[i] = toupper(s[i]);
+	return;
+}
+
+void newcode(string& s) {
+	string s2 = "";
+	int i = 0;
+	while (1) {
+		s2 += s[i];
+		if (i + 1 == s.size())
+			break;
+		if (s[i + 1] == s[i]) {
+			s2 += 'X';
+			++i;
+		}
+		else {
+			s2 += s[i + 1];
+			if (i + 2 == s.size())
+				break;
+			i += 2;
+		}
+	}
+	if (s2.size() % 2 != 0)
+		s2 += 'X';
+	s = s2;
+}
