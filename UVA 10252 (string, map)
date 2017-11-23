@@ -1,0 +1,31 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <cstring>
+#define maxn 1001
+
+using namespace std;
+
+
+int main() {
+	string s1, s2;
+	while (getline(cin, s1)) {
+		getline(cin, s2);
+		map<char, int>s1ct;
+		map<char, int>s2ct;
+		for (int i = 0; i < s1.length(); ++i)
+			s1ct[s1[i]]++;
+		for (int i = 0; i < s2.length(); ++i)
+			s2ct[s2[i]]++;
+
+		string s = "";
+		for (int i = 0; i < 26; ++i) {
+			char c = 'a' + i;
+			for (int i = 0; i < min(s1ct[c], s2ct[c]); ++i)
+				putchar(c);
+		}
+		cout << s << '\n';
+	}
+	return 0;
+}
