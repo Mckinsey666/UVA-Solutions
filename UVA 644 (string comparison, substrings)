@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool decodable(vector<string>&);
+int main()
+{
+	string s;
+	int i = 1;
+	while (cin >> s) {
+		vector<string>codes;
+		codes.push_back(s);
+		while (cin >> s&&s[0] != '9')
+			codes.push_back(s);
+		sort(codes.begin(), codes.end());
+		if (decodable(codes))
+			cout << "Set " << i << " is immediately decodable\n";
+		else
+			cout << "Set " << i << " is not immediately decodable\n";
+		++i;
+	}
+    return 0;
+}
+
+bool decodable(vector<string>& codes) {
+	for (int i = 0; i < codes.size(); ++i) {
+		for (int j = i + 1; j < codes.size(); ++j) {
+			if (codes[i] == codes[j])
+				return false;
+			else if (codes[i].size() == codes[j].size())
+				continue;
+			else {
+				string sub = codes[j].substr(0, codes[i].size());
+				if (sub == codes[i])
+					return false;
+			}
+		}
+	}
+	return true;
+}
