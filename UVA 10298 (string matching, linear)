@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+	string s;
+	while (cin >> s) {
+		if (s[0] == '.')
+			break;
+		int L = s.size();
+		for (int i = 1; i <= L; ++i) {
+			bool flag = true;
+			if (L%i == 0) {
+				for (int j = 0; j < (L / i - 1)*i; ++j) {
+					if (s[j] != s[j + i]) {
+						flag = false;
+						break;
+					}
+				}
+				if (flag) {
+					cout << L / i << '\n';
+					break;
+				}
+			}
+		}
+	}
+	return 0;
+}
