@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+	int n;
+	while (cin >> n) {
+		while (n--) {
+			string s;
+			int i;
+			cin >> s >> i;
+			sort(s.begin(), s.end());
+			int j = 0;
+			do {
+				++j;
+				if (j == i + 1)
+					break;
+			} while (next_permutation(s.begin(), s.end()));
+			cout << s << '\n';
+		}
+	}
+	return 0;
+}
