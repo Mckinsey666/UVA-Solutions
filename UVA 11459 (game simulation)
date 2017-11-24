@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+
+using namespace std;
+map<int, int>head_to_tail;
+bool game(int&, int);
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int n, p, s, m;
+//p = players, s = snakes, m = moves
+	while (!(cin >> n).eof()) {
+		while (n--) {
+			head_to_tail.clear();
+			cin >> p >> s >> m;
+			vector<int>players(p + 1, 1);//player moves
+			int h, t;
+			for (int i = 0; i < s; ++i) {
+				cin >> h >> t;	
+				head_to_tail[h] = t;
+			}
+			int i;
+			int move;
+			for (i = 1; i <= m; ++i) {
+				cin >> move;
+				if (game(players[(i - 1) % p + 1] , move))
+					break;
+			}
+			for (int j = i + 1; j <= m; ++j)
+				cin >> move;
+			for (int i = 1; i <= p; ++i)
+				cout << "Position of player " << i << " is " << players[i] << ".\n";
+		}
+	}
+	return 0;
+}
+
+bool game(int& pos, int move) {
+	pos += move;
+	if (head_to_tail.count(pos) == 1)
+		pos = head_to_tail[pos];
+	if (pos >= 100) {
+		pos = 100;
+		return true;
+	}
+	return false;
+}
