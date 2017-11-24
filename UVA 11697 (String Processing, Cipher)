@@ -7,6 +7,7 @@ using namespace std;
 
 void process(string&);
 void newcode(string&);
+
 int main()
 {
 	int n;
@@ -16,7 +17,6 @@ int main()
 			string key, code;
 			getline(cin, key); getline(cin, code);
 			process(key); process(code); newcode(code);
-			cout << code << endl;
 			map<char, int>used;
 			char keymap[5][5];
 			int k = 0;
@@ -29,14 +29,15 @@ int main()
 			}
 			char c = 'A';
 			while (k != 25) {
-				if (used.count(c) != 1&&c!='Q') {
+				if (used.count(c) != 1 && c != 'Q') {
 					keymap[k / 5][k % 5] = c;
 					used[c] = 1;
 					++k;
 				}
 				c = char(c + 1);
 			}
-			for (int i = 0; i < 24; ++i)
+
+			for (int i = 0; i < 25; ++i)
 				used[keymap[i / 5][i % 5]] = i;
 			for (int i = 0; i < code.size() - 1; i += 2) {
 				int x1 = used[code[i]] / 5, x2 = used[code[i + 1]] / 5,
@@ -45,7 +46,7 @@ int main()
 					putchar(keymap[x1][(y1 + 1) % 5]);
 					putchar(keymap[x2][(y2 + 1) % 5]);
 				}
-				else if(y1 == y2) {
+				else if (y1 == y2) {
 					putchar(keymap[(x1 + 1) % 5][y1]);
 					putchar(keymap[(x2 + 1) % 5][y2]);
 				}
@@ -54,15 +55,14 @@ int main()
 					putchar(keymap[x2][y1]);
 				}
 			}
-			if(n>0)
-				putchar('\n');
+			putchar('\n');
 		}
 	}
-    return 0;
+	return 0;
 }
 
 void process(string& s) {
-	while (s.find(' ') != -1) 
+	while (s.find(' ') != -1)
 		s.erase(s.find(' '), 1);
 	for (int i = 0; i < s.size(); ++i)
 		s[i] = toupper(s[i]);
