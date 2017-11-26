@@ -1,0 +1,70 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+
+using namespace std;
+
+void process(string&);
+bool magic(string&);
+bool is_palindrome(string&);
+
+int main()
+{
+	int n;
+	string s;
+	while (cin >> n) {
+		int i = 1;
+		char c = getchar();
+		while (n--) {
+			getline(cin, s);
+			process(s);
+			cout << "Case #" << i<< ":\n";
+			if (magic(s))
+				cout << sqrt(s.size());
+			else
+				cout <<"No magic :(";
+			cout << '\n';
+			i++;
+		}
+	}
+	return 0;
+}
+
+void process(string& s) {
+	string k = "";
+	for (int i = 0; i < s.size(); ++i)
+		if (isalpha(s[i]))
+			k += tolower(s[i]);
+	s = k;
+	return;
+}
+
+bool is_palindrome(string& s) {
+	int l = s.size();
+	int i = 0;
+	while (i <= l / 2) {
+		if (s[i] != s[l - i - 1]) return false;
+		++i;
+	}
+	return true;
+}
+
+bool magic(string& s) {
+	int L = s.size();
+	int d = sqrt(L);
+	if (d*d != L) return false;
+	if (!is_palindrome(s)) return false;
+	string temp = "";
+	for (int i = 0; i < d; ++i)
+		for (int j = 0; j < d; ++j)
+			temp += s[d*j + i];
+	if (!is_palindrome(temp)) return false;
+	return true;
+}
