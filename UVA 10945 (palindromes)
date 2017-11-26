@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+
+using namespace std;
+
+void process(string&);
+bool is_palindrome(const string&);
+int main()
+{
+	string s;
+	while (getline(cin, s)) {
+		if (s == "DONE")
+			break;
+		process(s);
+		cout << ((is_palindrome(s)) ? "You won't be eaten!\n" : "Uh oh..\n");
+	}
+	return 0;
+}
+
+void process(string& s) {
+	string k = "";
+	for (int i = 0; i < s.length(); ++i)
+		if (isalpha(s[i]))
+			k += tolower(s[i]);
+	s = k;
+	return;
+}
+
+bool is_palindrome(const string& s) {
+	int l = s.size();
+	int i = 0;
+	while (i <= l / 2) {
+		if (s[i] != s[l - i - 1])
+			return false;
+		++i;
+	}
+	return true;
+}
