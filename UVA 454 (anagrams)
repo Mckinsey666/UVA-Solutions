@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+
+using namespace std;
+
+string process(string&);
+char c;
+
+int main()
+{
+	int n;
+	string s;
+	while (cin >> n) {
+		c = getchar(); c = getchar();
+		while (n--) {
+			vector<string>sv;
+			while (getline(cin, s) && s != "")
+				sv.push_back(s);
+			
+			sort(sv.begin(), sv.end());
+			for (int i = 0; i < sv.size(); ++i)
+				for (int j = i + 1; j < sv.size(); ++j)
+					if (process(sv[i]) == process(sv[j]))
+						cout << sv[i] << " = " << sv[j] << '\n';
+			if(n)
+				cout << '\n';
+		}
+		return 0;
+	}
+}
+
+string process(string& s) {
+	string k = s;
+	int i;
+	while ((i=k.find(' ')) != -1)
+		k.erase(i, 1);
+	sort(k.begin(), k.end());
+	return k;
+}
