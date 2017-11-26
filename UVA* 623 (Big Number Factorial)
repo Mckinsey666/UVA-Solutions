@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+
+using namespace std;
+
+string process(string&);
+char c;
+
+int main()
+{
+	int n;
+	while (cin >> n) {
+		cout << n << "!\n";
+		unsigned long long  num[400] = { 0 };
+		num[0] = 1;
+		for(int k=1;k<=n;++k) {
+			for (int i = 0; i < 400; ++i)
+				num[i] *= k;
+			for (int i = 0; i < 399; ++i) {
+				num[i + 1] += num[i] / 1000000000;
+				num[i] %= 1000000000;
+			}
+		}
+		int j = 399;
+		while (num[j] == 0)
+			j--;
+		for (int i = j; i >= 0; --i) {
+			if (num[i])
+				cout << num[i];
+			else
+				cout << "000000000";
+		}
+		cout << '\n';
+	}
+	return 0;
+}
