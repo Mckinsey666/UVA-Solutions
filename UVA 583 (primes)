@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+typedef long long ll;
+using namespace std;
+
+
+int main()
+{
+	ll n;
+	while (cin >> n&&n != 0) {
+		cout << n << " = ";
+		if (n < 0) {
+			cout << -1 << " x ";
+			n /= -1;
+		}
+		while (n % 2 == 0) {
+			cout << 2;
+			n /= 2;
+			if (n != 1)
+				cout << " x ";
+		}
+		if (n == 1) {
+			cout << '\n';
+			continue;
+		}
+		else {
+			for (int i = 3; i <= sqrt(n); i += 2) {
+				while (n%i == 0) {
+					cout << i;
+					n /= i;
+					if (n != 1)
+						cout << " x ";
+					
+				}
+				if (n == 1)
+						break;
+			}
+			if (n != 1)
+				cout << n;
+			cout << '\n';
+		}
+	}
+	return 0;
+}
