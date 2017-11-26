@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+typedef unsigned long long ull;
+using namespace std;
+
+vector<int> primes;
+struct bp {
+	int b;
+	int p;
+};
+bool is_prime(int);
+int main()
+{
+	primes.push_back(2);
+	for (int i = 3; i <= 32767; i += 2)
+		if (is_prime(i))
+			primes.push_back(i);
+	string s;
+	while (getline(cin, s)) {
+		if (s == "0")
+			break;
+		stringstream ss(s);
+		int p, k;
+		ull n = 1;
+		while (ss >> p >> k)
+			n *= (ull)pow(p, k);
+		n--;
+
+		vector<bp>exp;
+		for(int i=0;primes[i]<=sqrt(n);++i)
+		{
+			int j = 0;
+			while(n%primes[i] == 0) {
+				n /= primes[i];
+				++j;
+			}
+			if (j)
+			{
+				bp k = { primes[i],j };
+				exp.push_back(k);
+			}
+		}
+		if (n != 1) {
+			bp k = { n,1 };
+			exp.push_back(k);
+		}
+		for (int i = exp.size() - 1; i >= 0; --i)
+		{
+			cout << exp[i].b << ' ' << exp[i].p;
+			if (i != 0)
+				cout << ' ';
+		}
+		cout << '\n';
+	}
+	return 0;
+}
+
+bool is_prime(int p) {
+	for (int i = 0; primes[i] <= sqrt(p); ++i)
+		if (p%primes[i] == 0)
+			return false;
+	return true;
+}
