@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+typedef unsigned long long ull;
+using namespace std;
+
+struct pp {
+	int b;
+	int p;
+};
+
+bool divisable(ull, vector<pp>);
+int main()
+{
+	ull n, m;
+	while (cin >> n >> m) {
+		vector<pp>exp;
+		ull temp = m;
+		int j = 0;
+		while (m % 2 == 0) {
+			m /= 2;
+			++j;
+		}
+		if (j != 0) {
+			pp k = { 2,j };
+			exp.push_back(k);
+		}
+		if (m != 1) {
+			for (int i = 3; i <= sqrt(m); i += 2) {
+				int j = 0;
+				while (m%i == 0) {
+					m /= i;
+					++j;
+				}
+				if (j != 0) {
+					pp k = { i,j };
+					exp.push_back(k);
+				}
+				if (m == 1)
+					break;
+			}
+			if (m != 1) {
+				pp k = { m,1 };
+				exp.push_back(k);
+			}
+		}
+		if (divisable(n, exp))
+			cout << temp << " divides " << n << "!\n";
+		else
+			cout << temp << " does not divide " << n << "!\n";
+	}
+	return 0;
+}
+
+bool divisable(ull n, vector<pp>exp) {
+	for (int i = 0; i < exp.size(); ++i) {
+		ull temp = n;
+		int x = 0;
+		while (temp != 0) 
+			x += (temp /= exp[i].b);
+		if (x < exp[i].p)
+			return false;
+	}
+	return true;
+}
