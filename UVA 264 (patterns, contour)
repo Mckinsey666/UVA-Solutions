@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	int n;
+	while (cin >> n) {
+		int x = ceil((sqrt(1 + 8 * n) + 1) / 2) - 1;
+		int k = x*(x + 1) / 2 - n;
+		if (x % 2)
+			cout << "TERM " << n << " IS " << 1 + k << "/" << x - k << '\n';
+		else
+			cout << "TERM " << n << " IS " << x- k << "/" << 1 + k << '\n';
+	}
+	return 0;
+}
