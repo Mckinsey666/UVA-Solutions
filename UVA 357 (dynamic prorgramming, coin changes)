@@ -1,0 +1,28 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#define maxn 30001
+
+typedef unsigned long long ll;
+using namespace std;
+
+const int c[5] = { 1,5,10,25,50 };
+
+int main()
+{
+	ll change[maxn] = {};
+	int n;
+	while (cin >> n) {
+		memset(change, 0, sizeof(change));
+		change[0] = 1;
+		for (int i = 0; i < 5; ++i)
+			for (int j = c[i]; j <= n; ++j)
+				change[j] += change[j - c[i]];
+
+		if (change[n] == 1)
+			cout << "There is only 1 way to produce " << n << " cents change.\n";
+		else
+			cout << "There are " << change[n] << " ways to produce " << n << " cents change.\n";
+	}
+	return 0;
+}
