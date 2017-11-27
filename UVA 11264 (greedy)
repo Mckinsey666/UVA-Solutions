@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+
+typedef unsigned long long ll;
+using namespace std;
+
+
+int main()
+{
+	int t,n;
+	while (cin >> t) {
+		while (t--) {
+			cin >> n;
+			vector<int>c(n, 0);
+			for (int i = 0; i < n; ++i)
+				cin >> c[i];
+			if (n <= 2)
+				cout << n;
+			else {
+				int sum = c[0], ct = 2;
+				for (int i = 1; i < n - 1; ++i)
+					if (sum < c[i] && sum + c[i] < c[i + 1]) {
+						sum += c[i];
+						++ct;
+					}
+				cout << ct << '\n';
+			}
+			}
+		}
+	return 0;
+}
