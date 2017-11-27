@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+#include <queue>
+#include <functional>
+typedef long long ll;
+using namespace std;
+
+int divisors(ll);
+int main() {
+	int t;
+	ll l, u;
+	while (cin >> t) {
+		while (t--) {
+			cin >> l >> u;
+			int max_divisors = 0;
+			ll n;
+			for (int i = l; i <= u; ++i)
+				if (divisors(i) > max_divisors) {
+					max_divisors = divisors(i);
+					n = i;
+				}
+			cout << "Between " << l << " and " << u << ", " << n << " has a maximum of " << max_divisors << " divisors.\n";
+		}
+	}
+	return 0;
+}
+
+int divisors(ll n) {
+	vector<int>factors;
+	int j = 0;
+	while (n % 2 == 0) {
+		n /= 2;
+		++j;
+	}
+	if (j)  factors.push_back(j);
+	for (int i = 3; i <= sqrt(n); i += 2) {
+		j = 0;
+		while (n%i == 0) {
+			n /= i;
+			++j;
+		}
+		if (j)  factors.push_back(j);
+		if (n == 1)  break;
+	}
+	if (n != 1)  factors.push_back(1);
+	int total = 1;
+	for (int i = 0; i < factors.size(); ++i)  
+		total *= (factors[i] + 1);
+	return total;
+}
