@@ -1,0 +1,69 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+#include <queue>
+#include <functional>
+#include <iomanip>
+#include <cstring>
+
+typedef unsigned long long ll;
+using namespace std;
+
+int used[13] = { 0 };
+int num[13] = { 0 };
+set<vector<int> >sums;
+void find_sum(int, int, int);
+int main() {
+	int sum, n;
+	while(cin>>sum>>n){
+		sums.clear();
+		if (sum == 0)
+			break;
+		memset(used, 0, sizeof(used));
+		memset(num, 0, sizeof(num));
+		for (int i = 0; i < n; ++i)
+			cin >> num[i];
+		find_sum(0, sum, -1);
+		cout << "Sums of " << sum << ":\n";
+		if (sums.size() == 0)
+			cout << "NONE\n";
+		else {
+			for (set<vector<int> >::iterator it = --sums.end(); it != --sums.begin(); --it) {
+				for (int i = 0; i < (*it).size(); ++i) {
+					if (i == 0)
+						cout << (*it)[0];
+					else
+						cout << '+' << (*it)[i];
+				}
+				cout << '\n';
+			}
+		}
+	}
+	return 0;
+}
+
+void find_sum(int n, int sum, int prev) {
+	if (n == sum) {
+		vector<int>sv;
+		for (int i = 0; i < 13; ++i)
+			if (used[i])
+				sv.push_back(num[i]);
+		sums.insert(sv);
+		return;
+	}
+	for (int i = prev+1; i<13; ++i) {
+		if (n + num[i] <= sum) {
+			used[i] = 1;
+			find_sum(n + num[i], sum, i);
+			used[i] = 0;
+		}
+	}
+	return;
+}
