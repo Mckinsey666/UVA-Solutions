@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <cctype>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <sstream>
+#include <cmath>
+#include <queue>
+#include <functional>
+#include <iomanip>
+
+typedef unsigned long long ll;
+using namespace std;
+
+int main() {
+	int f, r, s;
+	while (cin >> f) {
+		if (f == 0)
+			break;
+		cin >> r;
+		vector<double>front(f, 0);
+		vector<double>rear(r, 0);
+		int i = 0;
+		while (f--) cin >> front[i++];
+		i = 0;
+		while (r--) cin >> rear[i++];
+
+		set<double>ratio;
+		for (int i = 0; i < rear.size(); ++i)
+			for (int j = 0; j < front.size(); ++j)
+				ratio.insert(rear[i] / front[j]);
+		double spread = 0;
+		set<double>::iterator it = ratio.begin(), nxt = it;
+		++nxt;
+		while (1) {
+			spread = max(spread, *nxt / (*it));
+			++it; ++nxt;
+			if (nxt == ratio.end())
+				break;
+		}
+		cout << fixed << setprecision(2) << spread << '\n';
+	}
+	return 0;
+}
