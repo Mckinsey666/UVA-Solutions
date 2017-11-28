@@ -1,58 +1,52 @@
 #include <iostream>
-#include <algorithm>
-#include <string>
-#include <map>
 #include <vector>
+#include <cstring>
 #include <cmath>
-#include <iomanip>
+#define maxn 30001
 
+typedef unsigned long long ll;
 using namespace std;
 
-void best_track(int, long long[20], int[20], int[20],long long&, long long&);
+ll t[20];
+int  used[20];
+int cd[20];
+ll best = 0;
 
-int main()
-{
-	long long max_time;
-	int n;
-	while (!(cin >> max_time).eof())
-	{
-		long long tracks[20] = { 0 };
-		int best[20] = { 0 };
-		int used[20] = { 0 };
-		cin >> n;
-		for (int i = 0; i < n; ++i)
-			cin >> tracks[i];
-		long long best_sum = 0;
-		best_track(n, tracks, best, used, best_sum, max_time);
-		for (int i = 0; i < n; ++i)
-			if (best[i])
-				cout << tracks[i] << ' ';
-		cout << "sum:" << best_sum << endl;
+void find_best(ll, ll, int, int);
+
+int main() {
+	int total, tracks;
+	while (cin >> total >> tracks) {
+		memset(t, 0, sizeof(t));
+		memset(used, 0, sizeof(used));
+		memset(cd, 0, sizeof(cd));
+		best = 0;
+
+		for (int i = 0; i < tracks; ++i)
+			cin >> t[i];
+
+		find_best(0, total, 0, tracks);
+		for (int i = 0; i < tracks; ++i)
+			if (cd[i])
+				cout << t[i] << ' ';
+		cout <<"sum:"<< best << '\n';
 	}
 	return 0;
 }
 
-void best_track(int n, long long tracks[20], int best[20], int used[20], long long &best_sum, long long& max_time)
-{
-	if (n==-1)
-	{
-		long long sum = 0;
-		for (int i = 0; i < 20; ++i)
-			if (used[i])
-				sum += tracks[i];
-		if (sum<=max_time&&((max_time-sum)<(max_time-best_sum)))
-		{
-			best_sum = sum;
-			for (int i = 0; i < 20; ++i)
-				best[i] = used[i];
+void find_best(ll sum, ll total, int i, int n) {
+	if (i == n) {
+		if (total - sum < total - best) {
+			best = sum;
+			for (int j = 0; j < n; ++j)
+				cd[j] = used[j];
 		}
+		return;
 	}
-	if (n >= 0)
-	{
-		used[n - 1] = 1;
-		best_track(n - 1, tracks, best, used, best_sum, max_time);
-		used[n - 1] = 0;
-		best_track(n - 1, tracks, best, used, best_sum, max_time);
+	if (sum + t[i] <= total) {
+		used[i] = 1;
+		find_best(sum+t[i], total, i + 1, n);
 	}
-	return;
+	used[i] = 0;
+	find_best(sum, total, i + 1, n);
 }
