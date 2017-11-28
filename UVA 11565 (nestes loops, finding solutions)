@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <cmath>
+#define maxn 30001
+
+typedef unsigned long long ll;
+using namespace std;
+
+bool find(int, int, int);
+int main() {
+	int t, a, b, c;
+	while (cin >> t) {
+		while (t--) {
+			cin >> a >> b >> c;
+			if(c<0)
+				cout<< "No solution.\n";
+			if (!find(a, b, c))
+				cout << "No solution.\n";
+		}
+	}
+	return 0;
+}
+
+bool find(int a, int b, int c) {
+	int z;
+	for (int x = floor(-sqrt(c)); x < ceil(a/3); ++x) {
+		for (int y = x+1; y <= ((a - x) / 2); ++y) {
+			if ((z = a - x - y) <= y) continue;
+			if (x*x + y*y + z*z == c && x*y*z==b) {
+				cout << x << ' ' << y << ' ' << z << '\n';
+				return true;
+			}
+		}
+	}
+	return false;
+}
