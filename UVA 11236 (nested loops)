@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <cmath>
+#include <iomanip>
+#define maxn 30001
+
+typedef unsigned long long ll;
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	ll a, b, c, d;
+	for (a = 1; a <= 500; ++a)
+		for (b = a; b <= (2000 - a) / 3; ++b)
+			for (c = b; c <= (2000 - a - b) / 2; ++c)
+			{
+				ll p = a*b*c;
+				if (p <= 1000000) continue;
+				ll s = a + b + c;
+				if (((1000000 * s) % (p - 1000000)) != 0) continue;
+				ll d = (1000000 * s) / (p - 1000000);
+				if (s + d > 2000 || d < c) continue;
+				cout << fixed << setprecision(2) << double(a) / 100 << ' '
+					<< fixed << setprecision(2) << double(b) / 100 << ' '
+					<< fixed << setprecision(2) << double(c) / 100 << ' '
+					<< fixed << setprecision(2) << double(d) / 100 << '\n';
+			}
+	return 0;
+}
