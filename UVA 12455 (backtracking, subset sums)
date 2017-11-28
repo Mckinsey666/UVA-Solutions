@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <cmath>
+#include <iomanip>
+#include <cstdio>
+#define maxn 30001
+
+typedef unsigned long long ll;
+using namespace std;
+
+int bar[21];
+int used[21];
+bool find_sum(int, int, int, int);
+
+int main() {
+	int t, total, n;
+	while (cin >> t) {
+		while (t--) {
+			memset(bar, 0, sizeof(bar));
+			memset(used, 0, sizeof(used));
+
+			cin >> total >> n;
+			for (int i = 0; i < n; ++i)
+				cin >> bar[i];
+			if (find_sum(0, total, 0, n))
+				cout << "YES\n";
+			else
+				cout << "NO\n";
+		}
+	}
+	return 0;
+}
+
+bool find_sum(int sum, int total, int i, int n) {
+	if (i == n) {
+		if (sum == total)
+			return true;
+		return false;
+	}
+
+	if (sum + bar[i] <= total) {
+		used[i] = 1;
+		if (find_sum(sum + bar[i], total, i + 1, n))
+			return true;
+	}
+	used[i] = 0;
+	if (find_sum(sum, total, i + 1, n))
+		return true;
+	return false;
+}
