@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cmath>
 #include <iomanip>
+#include <cstdio>
 #define maxn 30001
 
 typedef unsigned long long ll;
@@ -22,10 +23,7 @@ int main() {
 				if (((1000000 * s) % (p - 1000000)) != 0) continue;
 				ll d = (1000000 * s) / (p - 1000000);
 				if (s + d > 2000 || d < c) continue;
-				cout << fixed << setprecision(2) << double(a) / 100 << ' '
-					<< fixed << setprecision(2) << double(b) / 100 << ' '
-					<< fixed << setprecision(2) << double(c) / 100 << ' '
-					<< fixed << setprecision(2) << double(d) / 100 << '\n';
+				printf("%.2f %.2f %.2f %.2f\n", double(a) / 100, double(b) / 100, double(c) / 100, double(d) / 100);
 			}
 	return 0;
 }
