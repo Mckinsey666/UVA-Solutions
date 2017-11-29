@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <cmath>
+#include <iomanip>
+#include <algorithm>
+#include <cstdio>
+#include <set>
+#include <cassert>
+
+using namespace std;
+
+
+int num[201];
+int used[201];
+void find_sums(int, int, int, int, int, int&);
+
+int main() {
+	int n, q;
+	int i = 1;
+	while (cin >> n >> q) {
+		if (!n)
+			break;
+		
+		memset(num, 0, sizeof(num));
+
+		for (int i = 0; i < n; ++i)
+			cin >> num[i];
+		int d, m;
+		if (i != 1)
+			cout << '\n';
+		cout << "SET " << i << ":\n";
+		for (int j = 1; j <= q; ++j) {
+			memset(used, 0, sizeof(used));
+			cin >> d >> m;
+			cout << "QUERY " << j << ": ";
+			int total = 0;
+			find_sums(n, 0, d, 0, m, total);
+			cout << total;
+			if(j!=q)
+				cout<<'\n';
+		}
+     }
+	return 0;
+}
+
+void find_sums(int n, int i, int d, int j, int m, int& ct) {
+	if (j==m) {
+		int t = 0;
+			int sum = 0;
+			for (int k = 0; k < n; ++k)
+				if (used[k]) {
+					sum += num[k];
+				}
+			if (sum%d == 0)
+				++ct;
+			return;
+	}
+	if (i < n) {
+		used[i] = 1;
+		find_sums(n, i + 1, d, j + 1, m, ct);
+		used[i] = 0;
+		find_sums(n, i + 1, d, j, m, ct);
+	}
+	return;
+}
