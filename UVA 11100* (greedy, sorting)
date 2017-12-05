@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <cmath>
+#include <iomanip>
+#include <algorithm>
+#include <cstdio>
+#include <set>
+#include <map>
+#include <string>
+#include <cassert>
+#include <sstream>
+#include <stack>
+#include <cctype>
+using namespace std;
+
+int main() {
+	int n;
+	int i = 1;
+	while (cin >> n) {
+		if (!n)
+			break;
+		vector<int>bags(n, 0);
+		vector<int>check(n, 0);
+		for (int i = 0; i < n; ++i)
+			cin >> bags[i];
+		sort(bags.begin(), bags.end());
+		vector<vector<int> >piece;
+		int ct = 0;
+		for (int i = 0; i < n; ++i) {
+			vector<int>b;
+			if (!check[i]) {
+				check[i] = 1;
+				int curr = bags[i];
+				b.push_back(curr);
+				for (int j = i; j < n; ++j) {
+					if (!check[j] && bags[j] > curr) {
+						check[j] = 1;
+						++ct;
+						b.push_back(curr=bags[j]);
+					}
+				}
+			}
+			if(!b.empty())
+				piece.push_back(b);
+		}
+		if (i != 1)
+			cout << '\n';
+		cout << piece.size() << '\n';
+		for (int i = 0; i < piece.size(); ++i) {
+			for (int j = 0; j < piece[i].size(); ++j) {
+				cout << piece[i][j];
+				if (j != piece[i].size() - 1)
+					cout << ' ';
+			}
+			cout << '\n';
+		}
+	}
+	return 0;
+}
