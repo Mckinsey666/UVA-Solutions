@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+const string bin[6] = { "BCG", "BGC", "CBG", "CGB", "GBC","GCB" };
+
+int main() {
+	int b1, g1, c1, b2, g2, c2, b3, g3, c3;
+	int move[6];
+	while (scanf_s("%d%d%d%d%d%d%d%d%d", &b1, &g1, &c1, &b2, &g2, &c2, &b3, &g3, &c3)==9) {
+		int total = b1 + g1 + c1 + b2 + g2 + c2 + b3 + g3 + c3;
+		move[0] = total - b1 - c2 - g3;
+		move[1] = total - b1 - g2 - c3;
+		move[2] = total - c1 - b2 - g3;
+		move[3] = total - c1 - g2 - b3;
+		move[4] = total - g1 - b2 - c3;
+		move[5] = total - g1 - c2 - b3;
+		int _min = (int)10e8;
+		int j;
+		for (int i = 0; i < 6; ++i)
+			if (move[i] < _min) {
+				_min = move[i];
+				j = i;
+			}
+		cout << bin[j] << ' ' << _min << '\n';
+	}
+	return 0;
+}
