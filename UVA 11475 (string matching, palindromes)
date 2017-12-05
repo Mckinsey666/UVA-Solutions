@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <cmath>
+#include <iomanip>
+#include <algorithm>
+#include <cstdio>
+#include <set>
+#include <map>
+#include <string>
+#include <cassert>
+#include <sstream>
+#include <stack>
+#include <cctype>
+using namespace std;
+
+string rev(string&);
+bool match(string&, string&, int);
+int main() {
+	string s;
+	while (cin >> s) {
+		string revs = rev(s);
+		bool flag = false;
+		int i;
+		for (i = s.size() - 1; i >= 0; --i)
+			if (flag = match(s, revs, i))
+				break;
+		if (!flag)
+			cout << s << revs << '\n';
+		else {
+			cout << s;
+			for (int j = i + 1; j < s.size(); ++j)
+				cout << revs[j];
+			cout << '\n';
+		}
+	}
+	return 0;
+}
+
+string rev(string& s) {
+	string temp = "";
+	for (int i = s.size() - 1; i >= 0; --i)
+		temp += s[i];
+	return temp;
+}
+
+bool match(string& s, string& revs, int n) {
+	for (int i = 0; i <= n; ++i)
+		if (revs[i] != s[i+s.size()-n-1])
+			return false;
+	return true;
+}
