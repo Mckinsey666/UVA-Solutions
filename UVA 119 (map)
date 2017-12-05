@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+int main() {
+	int n;
+	int i = 1;
+	string s;
+	while (cin>>n) {
+		map<string, int>gifts;
+		vector<string>names;
+		for(int i=0;i<n;++i) {
+			cin >> s;
+			gifts[s] = 0;
+			names.push_back(s);
+		}
+		int money, share;
+		string s2;
+		for(int j=0;j<n;++j) {
+			cin >> s >> money >> share;
+			if (share != 0)
+				gifts[s] -= (money / share)*share;
+			for (int i = 0; i < share; ++i) {
+				cin >> s2;
+				if (share != 0)
+					gifts[s2] += money / share;
+			}
+		}
+		if (++i != 1)
+			cout << '\n';
+		for (int i = 0; i < names.size(); ++i)
+			cout << names[i] << ' ' << gifts[names[i]] << '\n';
+	}
+	return 0;
+}
