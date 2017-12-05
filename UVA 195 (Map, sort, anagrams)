@@ -1,35 +1,28 @@
 #include <iostream>
 #include <algorithm>
-#include <string>
-#include <map>
-#include <vector>
-
+#include <cctype>
 using namespace std;
 
+bool comp(char, char);
 
-int main()
-{
+int main() {
 	int n;
-	while (cin >> n)
-	{
+	while (cin >> n) {
 		string s;
-		for (int i = 0; i < n; ++i)
-		{
-			cin>>s;
-			sort(s.begin(), s.end());
-			map <string, bool> check;
-			vector <string> anagrams;
+		while (n--) {
+			cin >> s;
+			sort(s.begin(), s.end(), comp);
 			do {
-				if (!check.count(s))
-				{
-					check[s] = true;
-					anagrams.push_back(s);
-				}
-			} while (next_permutation(s.begin(), s.end()));
-			sort(anagrams.begin(), anagrams.end());
-			for (int i = 0; i < anagrams.size(); ++i)
-				cout << anagrams[i] << endl;
+				cout << s << '\n';
+			} while (next_permutation(s.begin(), s.end(), comp));
 		}
 	}
 	return 0;
+}
+
+bool comp(char a, char b) {
+	char lower_a = tolower(a), lower_b = tolower(b);
+	if (lower_a == lower_b)
+		return a < b;
+	return lower_a < lower_b;
 }
