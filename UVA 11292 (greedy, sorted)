@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+	int n, m;
+	while (cin >> n >> m) {
+		if (!n)
+			break;
+		vector<int>dragon(n, 0);
+		vector<int>knights(m, 0);
+		vector<int>check(m, 0);
+		for (int i = 0; i < n; ++i)
+			cin >> dragon[i];
+		for (int i = 0; i < m; ++i)
+			cin >> knights[i];
+		sort(dragon.begin(), dragon.end());
+		sort(knights.begin(), knights.end());
+		int slayed = 0;
+		int pay = 0;
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < m; ++j) {
+				if (knights[j] >= dragon[i] && !check[j]) {
+					check[j] = 1;
+					pay += knights[j];
+					slayed++;
+					break;
+				}
+			}
+		}
+		if (slayed != n)
+			cout << "Loowater is doomed!\n";
+		else
+			cout << pay << '\n';
+	}
+	return 0;
+}
