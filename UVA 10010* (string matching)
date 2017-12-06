@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+char c;
+int k, m, n, t;
+char b[51][51];
+
+void find_word(string&, int&, int&);
+int main() {
+	int k, m, n, t;
+	string s;
+	while (cin >> k) {
+		while (k--) {
+			cin >> m >> n;
+			for (int i = 0; i < m; ++i)
+				for (int j = 0; j < n; ++j) {
+					cin >> b[i][j];
+					b[i][j] = tolower(b[i][j]);
+				}
+			cin >> t;
+			while (t--) {
+				cin >> s;
+				for (int i = 0; i < s.size(); ++i)
+					s[i] = tolower(s[i]);
+				int x=0,y=0;
+				find_word(s, x, y);
+				cout << x + 1 << ' ' << y + 1 << '\n';
+			}
+		}
+	}
+	return 0;
+}
+
+void find_word(string& s, int& x, int& y)
+{
+	int t;
+	for (x = 0; x < m; ++x) {
+		for (y = 0; y < n; ++y) {
+			if (b[x][y] == s[0]) {
+				for (t = 1; x - t >= 0 && s[t] == b[x - t][y];) { t++; if (t == s.size()) return; }
+				for (t = 1; x + t < m && s[t] == b[x + t][y];) { t++; if (t == s.size()) return; }
+				for (t = 1; y - t >= 0 && s[t] == b[x][y - t];) { t++; if (t == s.size()) return; }
+				for (t = 1; y + t < n && s[t] == b[x][y + t];) { t++; if (t == s.size()) return; }
+				for (t = 1; x - t >= 0 && y - t >= 0 && s[t] == b[x - t][y - t];) { t++; if (t == s.size()) return; }
+				for (t = 1; x + t < m && y - t >= 0 && s[t] == b[x + t][y - t];) { t++; if (t == s.size()) return; }
+				for (t = 1; x - t >= 0 && y + t < n && s[t] == b[x - t][y + t];) { t++; if (t == s.size()) return; }
+				for (t = 1; x + t < m && y + t < n && s[t] == b[x + t][y + t];) { t++; if (t == s.size()) return; }
+			}
+		}
+	}
+	return;
+}
