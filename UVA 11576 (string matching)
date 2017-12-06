@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+int t, k, w;
+set<string>ct;
+vector<string>words;
+//Determines best appeding method (least appended characters)	
+int append(string&, string&);
+int main() {
+	string s;
+	while (cin >> t) {
+		while (t--) {
+			ct.clear(); words.clear();
+			cin >> k >> w;
+			for (int i = 0; i < w; ++i) {
+				cin >> s;
+				if (ct.count(s) != 1) {
+					words.push_back(s);
+					ct.insert(s);
+				}
+			}
+			int len = k;
+			for (int i = 1; i < words.size(); ++i)
+				len += append(words[i - 1], words[i]);
+			cout << len << '\n';
+		}
+	}
+	return 0;
+}
+int append(string& s1, string& s2) {
+	int n;
+	for (n = k - 1; n>=0; --n) {
+		bool flag = true;
+		for (int i = 0; i <= n; ++i)
+			if (s2[i] != s1[i + k - n - 1]) {
+				flag = false;
+				break;
+			}
+		if (flag)
+			return k - n - 1;
+	}
+	return k;
+}
