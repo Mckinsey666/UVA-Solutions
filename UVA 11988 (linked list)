@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <list>
+using namespace std;
+
+int main() {
+	string s;
+	char c;
+	while (getline(cin, s)) {
+		list<char>text;
+		bool state = 1;
+		list<char>::iterator it = text.begin();
+		for (int i = 0; i < s.size(); ++i) {
+			if (s[i] == '[' || s[i] == ']') {
+				switch (s[i]) {
+				case '[': state = 0; it = text.begin(); break;
+				case ']': state = 1; break;
+				}
+			}
+			else {
+				if (state) text.push_back(s[i]);
+				else text.insert(it, s[i]);
+			}
+		}
+		for (list<char>::iterator it = text.begin(); it != text.end(); ++it)
+			cout << (*it);
+		cout << '\n';
+	}
+	return 0;
+}
