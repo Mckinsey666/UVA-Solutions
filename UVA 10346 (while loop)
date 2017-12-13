@@ -1,0 +1,16 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	long long n, k;
+	while (cin >> n >> k) {
+		long long total = n;
+		do {
+			total += n / k;
+			n = n / k + n%k;
+		} while (n >= k);
+		cout << total << endl;
+	}
+	return 0;
+}
