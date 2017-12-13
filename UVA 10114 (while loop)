@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+using namespace std;
+
+int main() {
+	double dur, down, loan, n, loss;
+	int m;
+	while (cin >> dur >> down >> loan >> n) {
+		if (dur < 0)
+			break;
+		map<int, double>dep;
+		for (int i = 0; i < n; ++i) {
+			cin >> m >> loss;
+			dep[m] = loss;
+		}
+		double worth = loan+down;
+		double t = dep[0];
+		double pay = loan / dur;
+		m = 0;
+		worth *= (1 - t);
+		if (dep.count(++m) == 1)
+			t = dep[m];
+		while (loan >= worth) {
+			loan -= pay;
+			worth *= (1 - t);
+			//cout << t << ' ' << loan << ' ' << worth << endl;
+			if (dep.count(++m) == 1)
+				t = dep[m];
+		}
+		m--;
+		if (m == 1) cout << 1 << " month\n";
+		else cout << m << " months\n";
+	}
+	return 0;
+}
