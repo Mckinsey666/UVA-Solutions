@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+int main() {
+	string s;
+	stringstream ss;
+	while (cin >> s) {
+		if (s.size()==1)
+			break;
+		set<long long>rand;
+		long long n = stoi(s);
+		int t;
+		do {
+			//cout << n << endl;
+			ss.str("");
+			rand.insert(n);
+			n = n*n;
+			ss << n;
+			s = to_string(n);
+			while (s.size() < 8)
+				s.insert(0, "0");
+			s = s.substr(2, 4);
+			n = stoi(s);
+		} while (rand.count(n) != 1);
+		cout << rand.size() << '\n';
+	}
+	return 0;
+}
