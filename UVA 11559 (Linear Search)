@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+using namespace std;
+typedef map<int, vector<int> >::iterator it;
+int main() {
+	int p, b, h, w;
+	while (cin >> p >> b >> h >> w) {
+		int arr[19][14] = {};
+		for (int i = 1; i <= h; ++i) {
+			cin >> arr[i][0];
+			for (int j = 1; j <= w; ++j)
+				cin >> arr[i][j];
+		}
+		int cost;
+		int min_cost = 10e8;
+		bool flag = false;
+		for (int i = 1; i <= h; ++i) {
+			for (int j = 1; j <= w; ++j)
+				if (p <= arr[i][j] && ((cost = p*arr[i][0]) <= b)) {
+					flag = true;
+					min_cost = min(cost, min_cost);
+				}
+		}
+		if (flag)
+			cout << min_cost << '\n';
+		else
+			cout << "stay home\n";
+	}
+	return 0;
+}
