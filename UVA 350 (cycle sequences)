@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+int main() {
+	long long  z, i, m, l;
+	int c = 1;
+	while (cin >> z >> i >> m >> l) {
+		map<long long, int>check;
+		long long first = l;
+		vector<long long>seq;
+		if (z == 0)
+			break;
+		int j = 1;
+		while (check.count(l) != 1){
+			check[l]=j++;
+			seq.push_back(l);
+			l = (z*l + i) % m;
+		}
+		cout << "Case " << c++ << ": " << seq.size()-(check[l]-check[first]) << '\n';
+	}
+	return 0;
+}
