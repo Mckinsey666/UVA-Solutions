@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+typedef long long ll;
+int card[5][5]; int seq[75];
+int row[5]; int col[5];
+int left_diag; int right_diag;
+bool bingo(int);
+
+int main() {
+	int n;
+	while (cin >> n) {
+		while (n--) {
+			memset(card, 0, sizeof(card)); memset(row, 0, sizeof(row)); memset(col, 0, sizeof(col));
+			left_diag = right_diag = 0;
+			
+			for (int i = 0; i < 2; ++i)
+				for (int j = 0; j < 5; ++j)
+					cin >> card[i][j];
+			cin >> card[2][0] >> card[2][1] >> card[2][3] >> card[2][4];
+			for (int i = 3; i < 5; ++i)
+				for (int j = 0; j < 5; ++j)
+					cin >> card[i][j];
+			
+			for (int i = 0; i < 5; ++i) {
+				for (int j = 0; j < 5; ++j) {
+					row[i] += card[i][j]; col[i] += card[j][i];
+				}
+				left_diag += card[i][i]; right_diag += card[i][4 - i];
+			}
+			for (int i = 0; i < 75; ++i)
+				cin >> seq[i];
+			int k;
+			for (k = 0; k < 75; ++k)
+				if (bingo(seq[k]))
+					break;
+			cout<<"BINGO after "<<k+1<<" numbers announced\n";
+	}
+	}
+	return 0;
+}
+
+bool bingo(int k) {
+	for (int i = 0; i < 5; ++i)
+		for (int j = 0; j < 5; ++j) {
+			if (card[i][j] == k) {
+				row[i] -= k; col[j] -= k;
+				if (i == j)
+					left_diag -= k;
+				else if (i + j == 4)
+					right_diag -= k;
+				break;
+			}
+		}
+	if (left_diag == 0 || right_diag == 0)
+		return true;
+	for (int i = 0; i < 5; ++i)
+		if (row[i] == 0 || col[i] == 0)
+			return true;
+	return false;
+}
