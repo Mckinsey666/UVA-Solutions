@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+typedef long long ll;
+int euclid(ll, ll, ll&, ll &);
+
+int main() {
+	ll a, b;
+	while (cin >> a >> b) {
+		ll x, y, gcd = euclid(a, b, x, y);
+		ll min = abs(x) + abs(y);
+		for (int i = -100; i <= 100; ++i) {
+			if (abs(x + i*b / gcd) + abs(y - i*a / gcd) < min) {
+				min = abs(x + i*b / gcd) + abs(y - i*a / gcd);
+				x += i*b / gcd; y -= i*a / gcd;
+			}
+		}
+		cout << x << ' ' << y << ' ' << gcd << '\n';
+	}
+	return 0;
+}
+
+int euclid(ll a, ll b, ll& x, ll & y) {
+	if (b == 0) {
+		x = 1; y = 0;
+		return a;
+	}
+	ll gcd = euclid(b, a%b, x, y);
+	ll t = x;
+	x = y;
+	y = t - (a / b)*y;
+	return gcd;
+}
