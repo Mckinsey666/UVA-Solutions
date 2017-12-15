@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+int main() {
+	string s;
+	while (cin >> s) {
+		if (s[0] == '#')
+			break;
+		int l = s.size();
+		string temp = s;
+		for (int i = l; i >= 0; --i) {
+			if (next_permutation(temp.begin() + i, temp.end()))
+				break;
+			else
+				temp = s;
+		}
+		if (temp == s)
+			cout << "No Successor\n";
+		else
+			cout << temp << '\n';
+	}
+	return 0;
+}
