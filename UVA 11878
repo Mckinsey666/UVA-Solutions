@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+
+int main() {
+	string ans;
+	int a, b, ct = 0;
+	char c, d;
+	while (cin >> a >> c >> b >> d >> ans) {
+		if (ans != "?") {
+			if (c == '+') {
+				if (a + b == stoi(ans))
+					ct++;
+			}
+			else if (c == '-') {
+				if (a - b == stoi(ans))
+					ct++;
+			}
+		}
+	}
+	cout << ct << '\n';
+	return 0;
+}
