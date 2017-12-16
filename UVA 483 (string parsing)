@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+
+int main() {
+	string s;
+	while (getline(cin, s)) {
+		stack<unsigned char>processor;
+		for (int i = 0; i < s.size(); ++i) {
+			if (s[i] == ' ') {
+				while (!processor.empty()) {
+					cout << processor.top();
+					processor.pop();
+				}
+				cout << ' ';
+			}
+			else
+				processor.push(s[i]);
+		}
+		while (!processor.empty()) {
+			cout << processor.top();
+			processor.pop();
+		}
+		cout << '\n';
+	}
+	return 0;
+}
