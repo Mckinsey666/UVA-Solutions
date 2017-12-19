@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+char c;
+struct cake {
+	int price;
+	string name;
+};
+
+bool comp(cake c1, cake c2) {
+	if (c1.price < c2.price)
+		return true;
+	else if (c1.price == c2.price)
+		return c1.name < c2.name;
+	return false;
+}
+
+
+int main() {
+	int t, m, n, b, price, p, x;
+	string title, ingred, ca;
+	while (cin >> t) {
+		while (t--) {
+			c = getchar(); getline(cin, title);
+			cin >> m >> n >> b;
+			map<string, int>ingredients;
+			vector<cake>cakes;
+			
+			for (int i = 0; i < m; ++i) {
+				cin >> ingred >> price;
+				ingredients[ingred] = price;
+			}
+			for (int i = 0; i < n; ++i) {
+				c = getchar();
+				getline(cin, ca);
+				cin >> p;
+				int total = 0;
+				for (int j = 0; j < p; ++j) {
+					cin >> ingred >> x;
+					total += ingredients[ingred] * x;
+				}
+				if (total <= b) {
+					cake ck = { total,ca };
+					cakes.push_back(ck);
+				}
+			}
+			//Print binder
+			for (int i = 0; i < title.size(); ++i) {
+				if (isalpha(title[i]))
+					cout << char(toupper(title[i]));
+				else
+					cout << title[i];
+			}
+			cout << '\n';
+			//Print cakes
+			if (cakes.empty())
+				cout << "Too expensive!\n";
+			else {
+				sort(cakes.begin(), cakes.end(), comp);
+				for (int i = 0; i < cakes.size(); ++i)
+					cout << cakes[i].name << '\n';
+			}
+			cout << '\n';
+		}
+	}
+	return 0;
+}
+
