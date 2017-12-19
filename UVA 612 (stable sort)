@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+char c;
+struct dna {
+	string seq;
+	int inv;
+};
+
+bool comp(dna a, dna b) {
+	return a.inv < b.inv;
+}
+
+int inversion(string s, int n);
+
+int main() {
+	int t, n, m;
+	string s;
+	while (cin >> t) {
+		c = getchar();
+		while (t--) {
+			c = getchar();
+			vector<dna>dv;
+
+			cin >> n >> m;
+			for (int i = 0; i < m; ++i) {
+				cin >> s;
+				dna d= { s,inversion(s,n)};
+				dv.push_back(d);
+			}
+			stable_sort(dv.begin(), dv.end(), comp);
+			for (int i = 0; i < m; ++i)
+				cout << dv[i].seq << '\n';
+			if(t)
+				cout << '\n';
+		}
+	}
+	return 0;
+}
+
+int inversion(string s, int n) {
+	int ct = 0;
+	for (int i = n - 1; i > 0; --i)
+		for (int j = 0; j < i; ++j) {
+			if (s[j] > s[j + 1]) {
+				swap(s[j], s[j + 1]);
+				ct++;
+			}
+		}
+	return ct;
+}
