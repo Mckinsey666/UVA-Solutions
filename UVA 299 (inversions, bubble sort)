@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include<map>
+#include<cmath>
+#include <sstream>
+#include <list>
+#include <iomanip>
+using namespace std;
+
+int train[100] = {};
+int main() {
+	int t,n;
+	while (cin >> t) {
+		while (t--) {
+			memset(train, 0, sizeof(train));
+			cin >> n;
+			for (int i = 0; i < n; ++i)
+				cin >> train[i];
+			int ct = 0;
+			for (int i = n - 1; i > 0; --i)
+				for (int j = 0; j < i; ++j)
+					if (train[j] > train[j + 1]) {
+						swap(train[j], train[j + 1]);
+						ct++;
+					}
+			cout << "Optimal train swapping takes " << ct << " swaps.\n";
+		}
+	}
+	return 0;
+}
+
