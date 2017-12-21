@@ -1,0 +1,73 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+using namespace std;
+typedef long long ll;
+
+bitset<10000010>sieve_set;
+vector<ll>primes;
+ll sieve_size;
+
+void sieve(ll);
+bool is_prime(ll);
+bool is_anagram_prime(ll);
+
+int main() {
+	sieve(1000);
+	ll n;
+	vector<ll>anagram_primes;
+	set<string>check;
+	for (ll i = 2; i <= 1000; ++i)
+		if (is_anagram_prime(i))
+			anagram_primes.push_back(i);
+	while (cin >> n) {
+		if (n == 0)
+			break;
+		if (n >= 991)
+			cout << 0 << '\n';
+		else {
+			int i = 0;
+			while (anagram_primes[i++] <= n);
+			if (anagram_primes[i - 1] > ll(pow(10, floor(log10(n)) + 1)))
+				cout << 0 << '\n';
+			else
+				cout << anagram_primes[i-1] << '\n';
+		}
+	}
+	return 0;
+}
+
+void sieve(ll upper_bound) {
+	sieve_size = upper_bound + 1;
+	sieve_set.reset(); sieve_set.flip();
+	sieve_set.set(0, false); sieve_set.set(size_t(1), false);
+	for (ll i = 2; i <= sieve_size; ++i)
+		if (sieve_set.test(i)) {
+			for (ll j = i*i; j <= sieve_size; j += i)
+				sieve_set.set(size_t(j), false);
+			primes.push_back(i);
+		}
+	return;
+}
+
+bool is_prime(ll n) {
+	for (int i = 0; primes[i] <= sqrt(n); ++i)
+		if (n%primes[i] == 0)
+			return false;
+	return true;
+}
+
+bool is_anagram_prime(ll n) {
+	string s = to_string(n);
+	sort(s.begin(), s.end());
+	do {
+		ll k = stoll(s);
+		if (!is_prime(k))
+			return false;
+	} while (next_permutation(s.begin(), s.end()));
+	return true;
+}
