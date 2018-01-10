@@ -1,0 +1,43 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+
+
+using namespace std;
+
+bool comp(char a, char b) {
+	return a > b;
+}
+void next(int&);
+int main() {
+	int n;
+	while (cin >> n) {
+		if (n == 0)
+			break;
+		cout << "Original number was " << n << '\n';
+		set<int>seq;
+		next(n);
+
+		do{
+			seq.insert(n);
+			next(n);
+		} while (seq.count(n) != 1);
+		cout << "Chain length " << seq.size() + 1 << "\n\n";
+	}
+	return 0;
+}
+
+void next(int& n){
+	string s = to_string(n);
+	sort(s.begin(), s.end()); int small = stoi(s);
+	sort(s.begin(), s.end(), comp); int big = stoi(s);
+	n = big - small;
+	cout << big << " - " << small << " = " << n << '\n';
+}
