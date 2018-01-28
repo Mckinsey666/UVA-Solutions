@@ -1,0 +1,66 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+int g[101][101];
+int nodes[101];
+vector<int>black;
+int ct, _max;
+
+void find(int v,int n) {
+	if (n>v) {
+		if (ct > _max) {
+			_max = ct;
+			black.clear();
+			for (int i = 1; i <= v; ++i)
+				if (nodes[i] == 1)
+					black.push_back(i);
+		}
+		return;
+	}
+
+	for(int i=1;i<=v;++i)
+		if (g[n][i] && nodes[i]) {
+			find(v, n+1);
+			return;
+		}
+	nodes[n] = 1; ct++;
+	find(v, n + 1);
+	nodes[n] = 0; ct--;
+	find(v, n + 1);
+}
+
+int main() {
+	int n, v, e, a, b;
+	while (cin >> n) {
+		for (int i = 0; i < n; ++i) {
+			memset(g, 0, sizeof(g));
+			memset(nodes, 0, sizeof(nodes));
+			ct = _max = 0;
+
+			cin >> v >> e;
+			for (int i = 0; i < e; ++i) {
+				cin >> a >> b;
+				g[a][b] = g[b][a] = 1;
+			}
+
+			find(v, 1);
+
+			cout << _max << '\n';
+			cout << black[0];
+			for (int i = 1; i < black.size(); ++i)
+				cout << ' ' <<  black[i];
+			cout << '\n';
+		}
+	}
+	return 0;
+}
