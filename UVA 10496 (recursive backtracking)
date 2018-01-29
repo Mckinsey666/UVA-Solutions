@@ -1,0 +1,62 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+bool visited[21];
+int _x, _y, a, b, c, d, _min, m;
+
+struct point {
+	int x;
+	int y;
+};
+
+point beeper[21];
+int dist(point b1, point b2) {
+	return abs(b1.x - b2.x) + abs(b1.y - b2.y);
+}
+
+void find_min_route(int ct, int pos, int len) {
+	if (ct == m) {
+		if (len + dist(beeper[pos], beeper[0]) < _min)
+			_min = len + dist(beeper[pos], beeper[0]);
+		return;
+	}
+
+	for (int i = 0; i <= m; ++i)
+		if (!visited[i]) {
+			visited[i] = 1;
+			find_min_route(ct + 1, i, len + dist(beeper[pos], beeper[i]));
+			visited[i] = 0;
+		}
+}
+
+int main() {
+	int n;
+	while(cin>>n){
+		for (int i = 0; i < n; ++i) {
+			_min = 1e9;
+			memset(visited, 0, sizeof(visited));
+			cin >> a >> b >> _x >> _y >> m;
+			beeper[0].x = _x;
+			beeper[0].y = _y;
+			visited[0] = 1;
+			for (int i = 1; i <= m; ++i) {
+				cin >> c >> d;
+				beeper[i].x = c;
+				beeper[i].y = d;
+			}
+			find_min_route(0, 0, 0);
+			cout << "The shortest path has length " << _min << '\n';
+		}
+	}
+	return 0;
+}
