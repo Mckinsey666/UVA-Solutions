@@ -1,0 +1,31 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+double area(double x, double y, double z) {
+	double s = (x + y + z) / 2;
+	return sqrt(s*(s - x)*(s - y)*(s - z));
+}
+
+int main() {
+	double x, y, z, r, R;
+	while (cin >> x >> y >> z) {
+		double A = area(x, y, z);
+		R = x*y*z / (4 * A);
+		r = 2 * A / (x + y + z);
+		double pi = 2 * acos(0);
+		cout << fixed << setprecision(4) << pi*R*R - A << ' ';
+		cout << fixed << setprecision(4) << A - pi*r*r << ' ';
+		cout << fixed << setprecision(4) << pi*r*r << '\n';
+	}
+	return 0;
+}
