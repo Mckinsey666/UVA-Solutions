@@ -1,0 +1,76 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+struct p {
+	double x;
+	double y;
+};
+
+double cross(p a, p b, p c) {
+	return (a.x - b.x)*(c.x - b.x) + (a.y - b.y)*(c.y - b.y);
+}
+double dist(p a, p b, p c) {
+	double m = (b.y - c.y) / (b.x - c.x), k = b.y - m*b.x;
+	return (abs(m*a.x - a.y + k))/sqrt(m*m + 1);
+}
+double dist(p a, p b) {
+	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+}
+bool valid(p a, p b, p c) {
+	return ((cross(a, b, c) > 0) && (cross(a, c, b) > 0));
+}
+p projection(p a, p b, p c) {
+	double m = (b.y - c.y) / (b.x - c.x), k = b.y - m*b.x;
+	double x = (a.x + m*a.y - m*k) / (m*m + 1), y = m*x + k;
+	p ret = { x,y };
+	return ret;
+}
+int main() {
+	double _x, _y;
+	int n;
+	while (cin >> _x >> _y >> n) {
+		p m = { _x,_y };
+		vector<p>rail;
+		for (int i = 0; i <= n; ++i) {
+			cin >> _x >> _y;
+			p c = { _x,_y };
+			rail.push_back(c);
+		}
+		double _min = 10e9;
+		p station;
+		double d;
+		for (int i = 0; i < n; ++i) {
+			if (valid(m, rail[i], rail[i + 1])) {
+				d = dist(m, rail[i], rail[i + 1]);
+				if (d < _min) {
+					_min = d;
+					station = projection(m, rail[i], rail[i + 1]);
+				}
+			}
+			else {
+				d = dist(m, rail[i]);
+				if (d < _min) {
+					_min = d;
+					station = rail[i];
+				}
+			}
+		}
+		d = dist(m, rail[n]);
+		if (d < _min)
+			station = rail[n];
+
+		cout << fixed << setprecision(4) << station.x << '\n';
+		cout << fixed << setprecision(4) << station.y << '\n';
+	}
+	return 0;
+}
