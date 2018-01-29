@@ -1,0 +1,51 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+struct peak {
+	double x;
+	double y;
+};
+
+bool comp(peak a, peak b) {
+	return a.x < b.x;
+}
+
+double dist(peak a, peak b) {
+	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+}
+int main() {
+	int n, m;
+	double _x, _y;
+	while (cin >> n) {
+		while (n--) {
+			cin >> m;
+			vector<peak> pv;
+			for (int i = 0; i < m; ++i) {
+				cin >> _x >> _y;
+				peak p = { _x,_y };
+				pv.push_back(p);
+			}
+			sort(pv.begin(), pv.end(), comp);
+			peak current = pv[m - 1];
+			double sunny_len = 0;
+			for (int i = m - 1; i >= 0; --i) {
+				if (pv[i].y > current.y) {
+					sunny_len += dist(pv[i], pv[i + 1])*(pv[i].y - current.y) / (pv[i].y - pv[i + 1].y);
+					current = pv[i];
+				}
+			}
+			cout << fixed << setprecision(2) << sunny_len<<'\n';
+		}
+	}
+	return 0;
+}
