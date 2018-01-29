@@ -1,0 +1,64 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+struct pole {
+	double x;
+	double y;
+	double h;
+};
+typedef map<double, vector<pole> > mdv;
+
+bool cmp(pole a, pole b) {
+	return pow(a.x, 2) + pow(a.y, 2) < pow(b.x, 2) + pow(b.y, 2);
+}
+
+int main() {
+	double _x, _y, _h;
+	int n, i = 1;
+	while (cin >> n&&n) {
+		vector<pole>pv;
+		mdv aligned;
+		for (int i = 0; i < n; ++i) {
+			cin >> _x >> _y >> _h;
+			pole p = { _x,_y,_h };
+			pv.push_back(p);
+			if (p.x == 0) aligned[INFINITY].push_back(p);
+			else if (p.y == 0) aligned[0].push_back(p);
+			else aligned[p.y / p.x].push_back(p);
+		}
+		vector<pole>hidden;
+		for (mdv::iterator it = aligned.begin(); it != aligned.end(); ++it) {
+			cout << "slope: " << it->first << '\n';
+			sort(it->second.begin(), it->second.end(), cmp);
+			cout << "sorted:\n";
+			for (int i = 0; i < it->second.size(); ++i)
+				cout << it->second[i].x << ' ' << it->second[i].y << '\n';
+			double max_h = it->second[0].h;
+			for (int i = 1; i < it->second.size(); ++i) {
+				if (it->second[i].h <= max_h) hidden.push_back(it->second[i]);
+				else max_h = it->second[i].h;
+			}
+		}
+		sort(hidden.begin(), hidden.end(), cmp);
+		cout << "Data set " << i++ << ":\n";
+		if (hidden.empty()) cout << "All the lights are visible.\n";
+		else {
+			cout << "Some lights are not visible:\n";
+			for (int i = 0; i < hidden.size(); ++i) {
+				cout << "x = " << hidden[i].x << ", y = " << hidden[i].y;
+				if (i != hidden.size() - 1)cout << ";\n";
+				else cout << ".\n";
+			}
+		}
+	}
+	return 0;
+}
