@@ -1,0 +1,57 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 30
+using namespace std;
+
+int war[len][len], n, ct;
+int marked[len][len];
+int cc[len][len];
+
+void find_eagles(int i, int j) {
+	marked[i][j] = 1;
+	cc[i][j] = ct;
+
+	if (war[i - 1][j] && !marked[i - 1][j]) find_eagles(i - 1, j);
+	if (war[i - 1][j - 1] && !marked[i - 1][j - 1]) find_eagles(i - 1, j - 1);
+	if (war[i - 1][j + 1] && !marked[i - 1][j + 1]) find_eagles(i - 1, j + 1);
+	if (war[i][j + 1] && !marked[i][j + 1]) find_eagles(i, j + 1);
+	if (war[i][j - 1] && !marked[i][j - 1]) find_eagles(i, j - 1);
+	if (war[i + 1][j] && !marked[i + 1][j]) find_eagles(i + 1, j);
+	if (war[i + 1][j - 1] && !marked[i + 1][j - 1]) find_eagles(i + 1, j - 1);
+	if (war[i + 1][j + 1] && !marked[i + 1][j + 1]) find_eagles(i + 1, j + 1);
+}
+
+int main() {
+	int i = 1;
+	string s;
+	while (cin >> n) {
+		memset(war, 0, sizeof(war));
+		memset(cc, 0, sizeof(cc));
+		memset(marked, 0, sizeof(marked));
+		ct = 0;
+
+		for (int i = 1; i <= n; ++i) {
+			cin >> s;
+			for (int j = 1; j <= n; ++j)
+				war[i][j] = s[j - 1] - '0';
+		}
+		
+		for (int i = 1; i <= n; ++i)
+			for (int j = 1; j <= n; ++j)
+				if (!marked[i][j] && war[i][j]) {
+					find_eagles(i, j);
+					ct++;
+				}
+		cout << "Image number " << i++ << " contains " << ct << " war eagles.\n";
+	}
+	return 0;
+}
