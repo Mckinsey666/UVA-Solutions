@@ -1,0 +1,57 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 105
+using namespace std;
+
+int oil[len][len], m,n, ct;
+int marked[len][len];
+int cc[len][len];
+
+void flood_fill(int i, int j) {
+	marked[i][j] = 1;
+	cc[i][j] = ct;
+
+	if (oil[i - 1][j] && !marked[i - 1][j]) flood_fill(i - 1, j);
+	if (oil[i - 1][j - 1] && !marked[i - 1][j - 1]) flood_fill(i - 1, j - 1);
+	if (oil[i - 1][j + 1] && !marked[i - 1][j + 1]) flood_fill(i - 1, j + 1);
+	if (oil[i][j + 1] && !marked[i][j + 1]) flood_fill(i, j + 1);
+	if (oil[i][j - 1] && !marked[i][j - 1]) flood_fill(i, j - 1);
+	if (oil[i + 1][j] && !marked[i + 1][j]) flood_fill(i + 1, j);
+	if (oil[i + 1][j - 1] && !marked[i + 1][j - 1]) flood_fill(i + 1, j - 1);
+	if (oil[i + 1][j + 1] && !marked[i + 1][j + 1]) flood_fill(i + 1, j + 1);
+}
+
+int main() {
+	int i = 1;
+	string s;
+	while (cin >>m>>n&&m) {
+		memset(oil, 0, sizeof(oil));
+		memset(cc, 0, sizeof(cc));
+		memset(marked, 0, sizeof(marked));
+		ct = 0;
+
+		for (int i = 1; i <= m; ++i) {
+			cin >> s;
+			for (int j = 1; j <= n; ++j)
+				oil[i][j] = (s[j - 1] == '@') ? 1 : 0;
+		}
+
+		for (int i = 1; i <= m; ++i)
+			for (int j = 1; j <= n; ++j)
+				if (!marked[i][j] && oil[i][j]) {
+					flood_fill(i, j);
+					ct++;
+				}
+		cout << ct<< '\n';
+	}
+	return 0;
+}
