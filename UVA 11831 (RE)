@@ -1,0 +1,68 @@
+// UVa.cpp : 定義主控台應用程式的進入點。
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 200
+using namespace std;
+
+int main() {
+	const int x[4] = { 0,1,0,-1 };
+	const int y[4] = { -1,0,1,0 };
+	int grid[len][len] = { 0 };
+	int n, m, s, r_x, r_y;
+	string str;
+	while (cin >> n >> m >> s&&n) {
+		int ort;
+		int ct = 0;
+		memset(grid, 0, sizeof(grid));
+		for (int i = 0; i < n; ++i) {
+			cin >> str;
+			for (int j = 0; j < m; ++j) {
+				switch (str[j]) {
+				case '.': grid[i][j] = 0; break;
+				case '*': grid[i][j] = 1; break;
+				case '#':grid[i][j] = 2; break;
+				default:
+					r_y = i; r_x = j; 
+					switch (str[j]) {
+					case 'N': ort = 0; break;
+					case 'S': ort = 2; break;
+					case 'L': ort = 1; break;
+					case 'O': ort = 3; break;
+					}
+					break;
+				}
+			}
+		}
+		cin >> str;
+		
+		for (int i = 0; i < s; ++i) {
+			if (str[i] == 'D') ort = (ort + 1) % 4;
+			else if (str[i] == 'E') ort = (ort + 3) % 4;
+			else{
+				if (r_y + y[ort] < n&&r_x + x[ort] < n) {
+					if (grid[r_y + y[ort]][r_x + x[ort]] != 2) {
+						r_y += y[ort]; r_x += x[ort];
+						if (grid[r_y][r_x] == 1) {
+							ct++;
+							grid[r_y][r_x] = 0;
+						}
+					}
+				}
+			}
+		}
+		cout << ct << '\n';
+	}
+	return 0;
+}
