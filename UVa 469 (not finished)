@@ -1,0 +1,72 @@
+// UVa.cpp : 定義主控台應用程式的進入點。
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 105
+using namespace std;
+
+int land[len][len], n, ct, a;
+int marked[len][len];
+int cc[len][len];
+
+//Recursive Flood Fill Method
+void find_eagles(int i, int j) {
+	marked[i][j] = 1;
+	cc[i][j] = ct;
+	a++;
+	if (land[i - 1][j] && !marked[i - 1][j]) find_eagles(i - 1, j);
+	if (land[i - 1][j - 1] && !marked[i - 1][j - 1]) find_eagles(i - 1, j - 1);
+	if (land[i - 1][j + 1] && !marked[i - 1][j + 1]) find_eagles(i - 1, j + 1);
+	if (land[i][j + 1] && !marked[i][j + 1]) find_eagles(i, j + 1);
+	if (land[i][j - 1] && !marked[i][j - 1]) find_eagles(i, j - 1);
+	if (land[i + 1][j] && !marked[i + 1][j]) find_eagles(i + 1, j);
+	if (land[i + 1][j - 1] && !marked[i + 1][j - 1]) find_eagles(i + 1, j - 1);
+	if (land[i + 1][j + 1] && !marked[i + 1][j + 1]) find_eagles(i + 1, j + 1);
+}
+
+int main() {
+	int i = 1, x, y;
+	string s;
+	while (cin >> n) {
+		while (n--) {
+			memset(land, 0, sizeof(land));
+			memset(cc, 0, sizeof(cc));
+			memset(marked, 0, sizeof(marked));
+			ct = 0;
+			int r = 1;
+
+			while(cin >> s){
+				if (!isalpha(s[0])) break;
+
+				for (int col = 1; col <= s.size(); ++col)
+					land[r][col] = (s[col - 1] == 'W')? 1 : 0;
+				++r;
+			} 
+			cout << r << ' ' << s.size() << '\n';
+			vector<int>area;
+	//DFS Flood Fill Search
+			for (int i = 1; i <= r; ++i)
+				for (int j = 1; j <= n; ++j)
+					if (!marked[i][j] && land[i][j]) {
+						a = 0;
+						find_eagles(i, j);
+						area.push_back(a);
+						ct++;
+					}
+			cin >> x >> y;
+			cout << area[cc[x][y]] << '\n';
+		}
+	}
+	return 0;
+}
