@@ -1,0 +1,58 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#include <sstream>
+#define len 105
+using namespace std;
+
+int ad[len][len];
+int marked[len];
+int cc[len];
+int n, ct;
+
+void dfs(int v, int no) {
+	marked[v] = 1;
+	cc[v] = ct;
+	for (int x = 1; x <= n; ++x)
+		if (x != no)
+			if (ad[v][x] && !marked[x])
+				dfs(x,no);
+}
+
+int main() {
+	string s;
+	int v, x;
+	while (cin >> n&&n) {
+		memset(ad, 0, sizeof(ad));
+		while (getline(cin, s) && s[0] != '0') {
+			stringstream ss(s);
+			ss >> v;
+			while (ss >> x)
+				ad[v][x] = ad[x][v] = 1;
+		}
+
+		int critical = 0;
+		for (int i = 1; i <= n; ++i) {
+			memset(marked, 0, sizeof(marked));
+			memset(cc, 0, sizeof(cc));
+			ct = 0;
+			for (int j = 1; j <= n; ++j) {
+				if (j != i && !marked[j]) {
+					dfs(j, i);
+					++ct;
+				}
+			}
+			if (ct > 1) critical++;
+		}
+		cout << critical << '\n';
+	}
+	return 0;
+}
