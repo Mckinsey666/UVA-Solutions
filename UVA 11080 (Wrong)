@@ -1,0 +1,69 @@
+
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 210
+#define RED true
+using namespace std;
+
+int ad[len][len], n, a, b, t;
+int marked[len];
+int street_color[len][len], junc_color[len], c;
+
+bool dfs(int v) {
+	marked[v] = 1;
+	junc_color[v] = c;
+
+	for (int x = 0; x < n; ++x)
+		if (ad[x][v]) {
+			if (marked[x]) {
+				if (street_color[x][v] != c)
+					return false;
+			}
+			else {
+				marked[x] = 1;
+				street_color[x][v] = street_color[v][x] = c;
+			}
+		}
+}
+
+int main() {
+	int k;
+	while (cin >> k) {
+		while (k--) {
+			cin >> n >> t;
+			memset(ad, 0, sizeof(ad));
+			memset(marked, 0, sizeof(marked));
+			memset(junc_color, 0, sizeof(junc_color));
+			memset(street_color, 0, sizeof(street_color));
+			c = 1;
+
+			while (t--) {
+				cin >> a >> b;
+				ad[a][b] = ad[b][a] = 1;
+			}
+
+			bool flag = true;
+			for (int i = 0; i < n; ++i)
+				if (!marked[i]) {
+					if (!dfs(i)) {
+						flag = false;
+						break;
+					}
+					else ++c;
+				}
+
+			if (flag) cout << c-1 << '\n';
+			else cout << -1 << '\n';
+		}
+	}
+	return 0;
+}
