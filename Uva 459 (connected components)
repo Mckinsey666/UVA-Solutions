@@ -1,0 +1,56 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 30
+using namespace std;
+
+int ad[len][len], v, ct;
+int marked[len];
+int cc[len];
+
+void dfs(int x) {
+	marked[x] = 1;
+	
+	for (int i = 0; i <= v; ++i)
+		if (ad[x][i])
+			if (!marked[i])
+				dfs(i);
+}
+
+int main() {
+	int n;
+	char c;
+	string s;
+	while (cin >> n) {
+		while (n--) {
+			memset(ad, 0, sizeof(ad));
+			memset(marked, 0, sizeof(marked));
+			ct = 0;
+
+			cin >> c;
+			v = c - 'A';
+			getline(cin, s);
+			while (getline(cin, s)) {
+				if (s == "")break;
+				ad[s[0] - 'A'][s[1] - 'A'] = ad[s[1] - 'A'][s[0] - 'A'] = 1;
+			}
+			for (int i = 0; i <= v; ++i) {
+				if (!marked[i]) {
+					dfs(i);
+					++ct;
+				}
+			}
+			cout << ct << '\n';
+			if (n) cout << '\n';
+		}
+	}
+	return 0;
+}
