@@ -1,0 +1,64 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#define len 105
+using namespace std;
+
+int grid[len][len], n, ct, a, hit;
+int marked[len][len];
+int cc[len][len];
+bool flag;
+
+//Recursive Flood Fill Method
+void dfs(int i, int j) {
+	marked[i][j] = 1;
+	a++;
+	if (grid[i][j] == 2)hit++;
+
+	if (grid[i - 1][j] && !marked[i - 1][j]) dfs(i - 1, j);
+	if (grid[i][j + 1] && !marked[i][j + 1]) dfs(i, j + 1);
+	if (grid[i][j - 1] && !marked[i][j - 1]) dfs(i, j - 1);
+	if (grid[i + 1][j] && !marked[i + 1][j]) dfs(i + 1, j);
+}
+	
+int main() {
+	int i = 1, x, y;
+	string s;
+	int t;
+	while (cin >> t) {
+		for(int i=1;i<=t;++i) {
+			cin >> n;
+			memset(grid, 0, sizeof(grid));
+			memset(marked, 0, sizeof(marked));
+			memset(cc, 0, sizeof(cc));
+			ct = 0;
+
+			for (int i = 1; i <= n; ++i) {
+				cin >> s;
+				for (int j = 1; j <= n; ++j)
+					switch (s[j - 1]) {
+					case 'x': grid[i][j] = 1; break;
+					case '@': grid[i][j] = 2; break;
+					default:break;
+					}
+			}
+			for (int i = 1; i <= n; ++i)
+				for (int j = 1; j <= n; ++j)
+					if (!marked[i][j] && grid[i][j]) {
+						a = hit = 0;
+						dfs(i, j);
+						if (a != hit) ct++;
+					}
+			cout << "Case " << i << ": " << ct << '\n';
+		}
+	}
+	return 0;
+}
