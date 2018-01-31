@@ -1,0 +1,70 @@
+// UVa.cpp : 定義主控台應用程式的進入點。
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#include <sstream>
+#include <stack>
+#define len 105
+using namespace std;
+
+int ad[len][len];
+int marked[len];
+int n, m;
+stack<int>path;
+char c;
+
+void dfs(int v) {
+	marked[v] = 1;
+	for (int x = 0; x < n; ++x)
+		if (ad[v][x] && !marked[x]) {
+			dfs(x);
+			path.push(x);
+		}
+}
+
+int main() {
+	int t;
+	char a, b;
+	string s, link;
+	while (cin >> t&&t) {
+		while (t--) {
+			c = getchar(); c = getchar();
+
+			memset(ad, 0, sizeof(ad));
+			memset(marked, 0, sizeof(marked));
+			while (!path.empty()) path.pop();
+
+			vector<char>v;
+			n = v.size();
+			map<char, int>node;
+			getline(cin, s);
+			for (int i = 0; i < s.size(); ++i)
+				if (isalpha(s[i]))
+					v.push_back(s[i]);
+			for (int i = 0; i < v.size(); ++i)
+				node[v[i]] = i;
+
+			getline(cin, s);
+			stringstream ss(s);
+			while (ss >> link) {
+				cout << link << '\n';
+				ad[node[link[0]]][node[link[2]]] = 1;
+			}
+
+			
+			c = getchar();
+		}
+	}
+	return 0;
+}
