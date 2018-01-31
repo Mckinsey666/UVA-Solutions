@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <map>
+#include <cstring>
+#include <sstream>
+
+#define len 30
+using namespace std;
+char ordered[len], c;
+int ad[len][len], marked[len], to[len], n;
+bool fail;
+vector<char>var;
+map<char, int>node;
+
+void toposort(int l) {
+	if (l == n) {
+		fail = false;
+		for (int i = 0; i < l; ++i) {
+			if (i) cout << ' ';
+			cout << ordered[i];
+		}
+		cout << '\n';
+		return;
+	}
+	
+	for (int i = 0; i < n; ++i) {
+		if (!marked[i] && !to[i]) {
+			for (int j = 0; j < n; ++j)
+				if (ad[i][j])
+					to[j]--;
+			marked[i] = 1;
+			ordered[l] = var[i];
+			toposort(l + 1);
+			marked[i] = 0;
+			for (int j = 0; j < n; ++j)
+				if (ad[i][j])
+					to[j]++;
+		}
+	}
+}
+
+int main() {
+	string s, link;
+	int t;
+	while(cin>>t){
+		c = getchar(); c = getchar();
+		while (t--) {
+			memset(ad, 0, sizeof(ad));
+			memset(marked, 0, sizeof(marked));
+			memset(to, 0, sizeof(to));
+			var.clear();
+			fail = true;
+
+			getline(cin, s);
+			for (int i = 0; i < s.size(); ++i)
+				if (isalpha(s[i]))
+					var.push_back(s[i]);
+			sort(var.begin(), var.end());
+			n = var.size();
+			for (int i = 0; i < n; ++i)
+				node[var[i]] = i;
+
+			getline(cin, s);
+			stringstream ss(s);
+			while (ss >> link) {
+				ad[node[link[0]]][node[link[2]]] = 1;
+				to[node[link[2]]]++;
+			}
+			
+			toposort(0);
+			if (fail) cout << "NO\n";
+
+			if(t)cout << '\n';
+			c = getchar();
+		}
+	}
+	return 0;
+}
