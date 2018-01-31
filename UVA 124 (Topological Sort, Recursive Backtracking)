@@ -1,0 +1,80 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#include <sstream>
+#include <stack>
+#define len 30
+using namespace std;
+char c, a, b;
+int ad[len][len], marked[len], to[len], n;
+vector<string>ordered;
+vector<char>var;
+map<char, int>node;
+
+void toposort(int l,string s) {
+	if (l == n) {
+		ordered.push_back(s);
+		return;
+	}
+	
+	for (int i = 0; i < n; ++i) {
+		if (!marked[i] && !to[i]) {
+			for (int j = 0; j < n; ++j) {
+				if (ad[i][j])
+					to[j]--;
+			}
+			marked[i] = 1;
+			toposort(l + 1, s + var[i]);
+			marked[i] = 0;
+			for (int j = 0; j < n; ++j)
+				if (ad[i][j])
+					to[j]++;
+
+		}
+	}
+}
+
+int main() {
+	string s;
+	bool start = 1;
+	while (getline(cin,s)) {
+		memset(ad, 0, sizeof(ad));
+		memset(marked, 0, sizeof(marked));
+		memset(to, 0, sizeof(to));
+		ordered.clear(); var.clear(); node.clear(); 
+	
+		if (start) start = 0;
+		else cout << '\n';
+
+		for (int i = 0; i < s.size(); ++i)
+			if (isalpha(s[i]))
+				var.push_back(s[i]);
+		for (int i = 0; i < var.size(); ++i)
+			node[var[i]] = i;
+		n = var.size();
+
+		getline(cin, s);
+		stringstream ss(s);
+		while (ss >> a) {
+			ss >> b;
+			ad[node[a]][node[b]] = 1;
+			to[node[b]]++;
+		}
+
+
+		toposort(0,"");
+		sort(ordered.begin(), ordered.end());
+
+		for (int i = 0; i < ordered.size(); ++i)
+			cout << ordered[i] << '\n';
+	}
+	return 0;
+}
