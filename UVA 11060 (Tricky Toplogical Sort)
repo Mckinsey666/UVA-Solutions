@@ -1,0 +1,80 @@
+
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#include <sstream>
+#include <stack>
+#define len 105
+using namespace std;
+
+int n, ad[len][len], marked[len], to[len];
+int order[len];
+map<string, int>alcohol;
+map<int, string>key;
+
+bool toposort(int l) {
+	if (l == n)
+		return true;
+	
+	for (int i = 0; i < n; ++i)
+		if (!marked[i] && !to[i]) {
+
+			for (int j = 0; j < n; ++j)
+				if (ad[i][j])
+					to[j]--;
+			marked[i] = 1;
+			order[l] = i;
+			if (toposort(l + 1))
+				return true;
+			marked[i] = 0;
+			for (int j = 0; j < n; ++j)
+				if (ad[i][j])
+					to[j]++;
+		}
+}
+
+int main() {
+	string s, next;
+	int t, i = 1;
+	while (!(cin >> n).eof()) {
+		memset(ad, 0, sizeof(ad));
+		memset(marked, 0, sizeof(marked));
+		memset(to, 0, sizeof(to));
+		memset(order, 0, sizeof(order));
+		alcohol.clear(); key.clear();
+
+		for (int i = 0; i < n; ++i) {
+			cin >> s;
+			alcohol[s] = i;
+			key[i] = s;
+		}
+
+		
+		cin >> t;
+		while (t--) {
+			cin >> s >> next;
+			if (!ad[alcohol[s]][alcohol[next]]) {
+				ad[alcohol[s]][alcohol[next]] = 1;
+				to[alcohol[next]]++;
+			}
+		}
+
+		toposort(0);
+		cout << "Case #" << i++<<": Dilbert should drink beverages in this order: ";
+		for (int i = 0; i < n; ++i) {
+			cout << key[order[i]];
+			if (i == n - 1) cout << '.';
+			else cout << ' ';
+		}
+		cout << "\n\n";
+	}
+	return 0;
+}
