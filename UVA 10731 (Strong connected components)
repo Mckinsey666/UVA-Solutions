@@ -1,0 +1,109 @@
+#include <iostream>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <map>
+#include <cmath>
+#include <iomanip>
+#include <cstring>
+#include <sstream>
+#include <stack>
+#define len 26
+using namespace std;
+
+int g[len][len];
+int rev_g[len][len];
+int marked[len];
+int ans[len];
+int cc[len];
+int ct;
+char c;
+vector<int>path;
+void process(string& s) {
+	int i = 0;
+	while (1) {
+		if (i == s.size()) break;
+		while (!isalpha(s[i]))
+			s.erase(i, 1);
+		i++;
+	}
+}
+
+void topo(int v) {
+	marked[v] = 1;
+	for (int i = 0; i < len; ++i)
+		if (ans[i] && !marked[i] && rev_g[v][i]) {
+			marked[i] = 1;
+			topo(i);
+			path.push_back(i);
+		}
+}
+
+void dfs(int v) {
+	marked[v] = 1;
+	cc[v] = ct;
+	for (int i = 0; i < len; ++i)
+		if (ans[i] && !marked[i] && g[v][i])
+			dfs(i);
+}
+
+int main() {
+	int n;
+	string s;
+	int i = 0;
+	while (cin >> n&&n) {
+		c = getchar();
+		memset(g, 0, sizeof(g));
+		memset(rev_g, 0, sizeof(rev_g));
+		memset(ans, 0, sizeof(ans));
+		memset(cc, 0, sizeof(cc));
+		memset(marked, 0, sizeof(marked));
+		ct = 0;
+		path.clear();
+
+		while (n--) {
+			getline(cin, s);
+			process(s);
+			ans[s[5] - 'A'] = 1;
+			for (int i = 0; i < 5; ++i) {
+				ans[s[i] - 'A'] = 1;
+				g[s[i] - 'A'][s[5] - 'A'] = 1;
+				rev_g[s[5] - 'A'][s[i] - 'A'] = 1;
+			}
+		}
+		for(int i=0;i<len;++i)
+			if (ans[i]) {
+				if (!marked[i]) {
+					topo(i);
+					path.push_back(i);
+				}
+			}
+		memset(marked, 0, sizeof(marked));
+		for (int i = path.size() - 1; i >= 0; --i) {
+			if (!marked[path[i]]) {
+				dfs(path[i]);
+				ct++;
+			}
+		}
+		memset(marked, 0, sizeof(marked));
+		if (i) cout << '\n';
+		else i = 1;
+		for (int i = 0; i < len; ++i)
+			if (ans[i]&&!marked[i]) {
+				cout << char(i + 'A');
+				marked[i] = 1;
+				for (int j = 0; j < len; ++j)
+					if (ans[j]) {
+						if (!marked[j]&&cc[i] == cc[j]) {
+							marked[j] = 1;
+							cout << ' ' << char(j + 'A');
+						}
+					}
+				cout << '\n';
+			}
+	}
+	return 0;
+}
