@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define len 60
+using namespace std;
+
+char pixel[len][len];
+int m, n;
+
+void dfs_dice(int i, int j) {
+	pixel[i][j] = '*';
+
+	if (j > 1 && pixel[i][j - 1] == 'X') dfs_dice(i, j - 1);
+	if (j < n  && pixel[i][j + 1] == 'X') dfs_dice(i, j + 1);
+	if (i > 1 && pixel[i - 1][j] == 'X') dfs_dice(i - 1, j);
+	if (i < m  && pixel[i + 1][j] == 'X') dfs_dice(i + 1, j);
+}
+
+void dfs_pixel(int i, int j, int& val) {
+	if (pixel[i][j] == 'X') {
+		++val;
+		dfs_dice(i, j);
+	}
+	pixel[i][j] = '.';
+
+	if (j > 1 && pixel[i][j - 1] != '.') dfs_pixel(i, j - 1, val);
+	if (j < n  && pixel[i][j + 1] != '.') dfs_pixel(i, j + 1, val);
+	if (i > 1 && pixel[i - 1][j] != '.') dfs_pixel(i - 1, j, val);
+	if (i < m  && pixel[i + 1][j] != '.') dfs_pixel(i + 1, j, val);
+}
+
+
+int main() {
+	int i = 1;
+	while (cin >> n >> m) {
+		if (!n && !m) break;
+		memset(pixel, 0, sizeof(pixel));
+		for (int i = 1; i <= m; ++i)
+			for (int j = 1; j <= n; ++j)
+				cin >> pixel[i][j];
+		
+		vector<int>dice;
+
+		for (int i = 1; i <= m; ++i)
+			for (int j = 1; j <= n; ++j) {
+				if (pixel[i][j] == '*') {
+					int val = 0;
+					dfs_pixel(i, j, val);
+					dice.push_back(val);
+				}
+			}
+		
+		sort(dice.begin(), dice.end());
+		cout << "Throw " << i++ << '\n';
+		for (int i = 0; i < dice.size(); ++i) {
+			if (i) cout << ' ';
+			cout << dice[i];
+		}
+		cout << "\n\n";
+	}
+	return 0;
+}
