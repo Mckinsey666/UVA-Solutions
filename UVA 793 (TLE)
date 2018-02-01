@@ -1,61 +1,58 @@
-
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <string>
-#include <cmath>
-#include <queue>
-#include <functional>
-#include <time.h>
-#include <cstdlib>
-#include <queue>
-#include <map>
 #include <sstream>
-#include <list>
-#include <stack>
-
+#include <cstdio>
+#include <vector>
 using namespace std;
 
-int n;
-char c;
-vector<int>cc;
+int main(){
+  int testcase;
+  while( scanf("%d", &testcase) != EOF ){
 
-struct query {
-	int i;
-	int j;
-};
-void combine(int i, int j) {
-	int p = cc[i], q = cc[j];
-	for (int k = 0; k < n; ++k)
-		if (cc[k] == q)
-			cc[k] = p;
-}
-bool connected(int i, int j) {
-	return cc[i] == cc[j];
-}
+    for( int caseNumber = 0 ; caseNumber < testcase ; ++caseNumber ){
+      if( caseNumber >= 1 ){
+        printf("\n");
+      }
 
-int main() {
-	int t, i, j;
-	while (cin >> t) {
-		while (t--) {
-			cc.clear();
-			cin >> n; c = getchar();//next line
-			for (int i = 0; i <= n; ++i)
-				cc.push_back(i);
-			int ct = 0, asks = 0;
-			while ((c = getchar()) != '\n') {
-				cin >> i >> j;
-				cout << c << '\n';
-				if (c == 'c') combine(i, j);
-				else {
-					asks++; 
-					if(connected(i, j)) ct++;
-				}
-				c = getchar();
-			}
-			cout << ct << ',' << asks - ct;
-			if (t) cout << '\n';
-		}
-	}
-	return 0;
+      int numberOfComputers;
+      scanf("%d", &numberOfComputers);
+
+      vector<int> connected(numberOfComputers+1);
+      for( int i = 1 ; i <= numberOfComputers ; ++i ){
+        connected[i] = i;
+      }
+
+
+      int rightAnswer = 0, wrongAnswer = 0;
+      string input;
+      cin.ignore();
+      while( getline(cin, input) && input != "" ){
+
+        stringstream ss(input);
+        char type;
+        int computerI, computerJ;
+        ss >> type >> computerI >> computerJ;
+
+        if( type == 'c' ){ 
+          int groupI = connected[computerI], groupJ = connected[computerJ];
+          for( int i = 1 ; i <= numberOfComputers ; ++i ){
+            if( connected[i] == groupI || connected[i] == groupJ ){
+              connected[i] = min(groupI, groupJ);
+            }
+          }
+        }
+        else if( type == 'q' ){
+          if( connected[computerI] != connected[computerJ] ){
+            ++wrongAnswer;
+          }
+          else{
+            ++rightAnswer;
+          }
+        }
+      }
+
+      printf("%d,%d\n", rightAnswer, wrongAnswer);
+    }
+  }
+
+  return 0;
 }
