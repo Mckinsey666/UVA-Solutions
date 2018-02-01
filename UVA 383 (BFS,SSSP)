@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+#include <map>
+#define L 35
+
+using namespace std;
+
+int g[L][L], m, n, p;
+int shortest[L], marked[L];
+
+void bfs(int v) {
+	marked[v] = 1;
+	queue<int>paths;
+	paths.push(v);
+	while (!paths.empty()) {
+		int w = paths.front(); paths.pop();
+		for (int i = 0; i < m; ++i)
+			if (!marked[i] && g[i][w]) {
+				paths.push(i);
+				marked[i] = 1;
+				shortest[i] = 1 + shortest[w];
+			}
+	}
+}
+
+int main() {
+	int t, sz;
+	string s, s2;
+	while (cin >> t){
+		cout << "SHIPPING ROUTES OUTPUT\n\n";
+		for (int i = 1; i <= t; ++i) {
+			memset(g, 0, sizeof(g));
+
+			cin >> m >> n >> p; // n = maximum path
+			map<string, int>wh;
+			for (int i = 0; i < m; ++i) {
+				cin >> s; wh[s] = i;
+			}
+			while (n--) {
+				cin >> s >> s2;
+				g[wh[s]][wh[s2]] = g[wh[s2]][wh[s]] = 1;
+			}
+			cout << "DATA SET  " << i << "\n\n";
+			while (p--) {
+				memset(shortest, 0, sizeof(shortest));
+				memset(marked, 0, sizeof(marked));
+				cin >> sz >> s >> s2;
+				bfs(wh[s]);
+				if (!marked[wh[s2]]) cout << "NO SHIPMENT POSSIBLE\n";
+				else cout << "$" << sz * 100 * shortest[wh[s2]] << '\n';
+			}
+			cout << "\n";
+		}
+		cout << "END OF OUTPUT\n";
+	}
+	return 0;
+}
