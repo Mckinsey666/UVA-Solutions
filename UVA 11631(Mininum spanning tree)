@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <cstdio>
+#include <queue>
+#define L 200010
+
+using namespace std;
+
+int g[L], m, n;
+int cc[L];
+int ct[L];
+struct edge {
+	int v1;
+	int v2;
+	int w;
+};
+auto cmp=[](edge a, edge b) {
+	return a.w > b.w;
+};
+
+int root(int i) {
+	if (cc[i] == i) return i;
+	return cc[i] = root(cc[i]);
+}
+bool connected(int i, int j) {
+	return root(i) == root(j);
+}
+void combine(int i, int j) {
+	i = root(i);
+	j = root(j);
+	if (i != j)
+		cc[i] = j;
+}
+
+int main() {
+	int x, y, z;
+	while (scanf_s("%d%d",&m,&n)&& m && n) {
+		priority_queue<edge, vector<edge>, decltype(cmp)> ev(cmp);
+		for (int i = 0; i < m; ++i) {
+			cc[i] = i; ct[i] = 1;
+		}
+		long long total = 0;
+		while (n--) {
+			scanf_s("%d%d%d", &x, &y, &z);
+			total += z;
+			edge e = { x,y,z };
+			ev.push(e);
+		}
+		long long cost = 0;
+		while(!ev.empty()){
+			edge e = ev.top(); ev.pop();
+			if (connected(e.v1, e.v2)) continue;
+			combine(e.v1, e.v2);
+			cost += e.w;
+		}
+		cout << total-cost << '\n';
+	}
+	return 0;
+}
