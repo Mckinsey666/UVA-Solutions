@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+int n;
+char c;
+vector<int>cc;
+
+int root(int i) {
+	if (cc[i] == i) return i;
+	return cc[i] = root(cc[i]);
+}
+void combine(int i, int j) {
+	i = root(i);
+	j = root(j);
+	if (i != j)
+		cc[j] = i;
+}
+bool connected(int i, int j) {
+	return root(i) == root(j);
+}
+
+int main() {
+	int t, i, j;
+	string s;
+	while (!(cin >> t).eof()) {
+		while (t--) {
+			cc.clear();
+
+			cin >> n; cin.ignore();
+			for (int i = 0; i <= n; ++i)
+				cc.push_back(i);
+			int ct = 0, asks = 0;
+
+			while (getline(cin, s) && s != "") {
+				stringstream ss(s);
+				ss >> c >> i >> j;
+				if (c == 'c') combine(i, j);
+				else {
+					asks++; 
+					if(connected(i, j)) ct++;
+				}
+			}
+			cout << ct << ',' << asks - ct << '\n';
+			if (t) cout << '\n';
+		}
+	}
+	return 0;
+}
