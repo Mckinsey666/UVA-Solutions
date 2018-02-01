@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <map>
+#include <cstring>
+#define L 35
+
+using namespace std;
+
+int g[L][L], n;
+int shortest[L], marked[L];
+
+void bfs(int v) {
+	marked[v] = 1;
+	queue<int>paths;
+	paths.push(v);
+	while (!paths.empty()) {
+		int w = paths.front(); paths.pop();
+		for (int i = 0; i < n; ++i)
+			if (!marked[i] && g[i][w]) {
+				paths.push(i);
+				marked[i] = 1;
+				shortest[i] = 1 + shortest[w];
+			}
+	}
+}
+
+int main() {
+	int t, a, b, i = 1;
+	while (cin >> t&&t) {
+		memset(g, 0, sizeof(g));
+
+		map<int, int> node;
+		int ct = 0;
+		while(t--){
+			cin >> a >> b;
+			if (node.count(a) != 1) node[a] = ct++;
+			if (node.count(b) != 1) node[b] = ct++;
+			g[node[a]][node[b]] = g[node[b]][node[a]] = 1;
+		}
+		n = node.size();
+		while (cin >> a >> b) {
+			if (!a && !b) break;
+			memset(shortest, 0, sizeof(shortest));
+			memset(marked, 0, sizeof(marked));
+			int ct = 0;
+			bfs(node[a]);
+			for (int i = 0; i < n; ++i)
+				if (marked[i] && shortest[i] <= b)
+					ct++;
+			cout << "Case "<<i++<<": "<<n-ct<<" nodes not reachable from node "<<a<<" with TTL = "<<b<<".\n";
+		}
+	}
+	return 0;
+}
