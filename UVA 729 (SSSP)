@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+#include <map>
+#include <sstream>
+#include <cstring>
+#define L 205
+
+using namespace std;
+
+int g[L][L], n;
+int shortest[L], marked[L];
+
+bool link(string a, string b) {
+	if (a.size() != b.size()) return false;
+	int ct = 0;
+	for (int i = 0; i < a.size(); ++i)
+		if (a[i] != b[i])++ct;
+	return ct == 1;
+}
+
+void bfs(int v) {
+	marked[v] = 1;
+	queue<int>paths;
+	paths.push(v);
+	while (!paths.empty()) {
+		int w = paths.front(); paths.pop();
+		for (int i = 0; i < n; ++i)
+			if (!marked[i] && g[i][w]) {
+				paths.push(i);
+				marked[i] = 1;
+				shortest[i] = 1 + shortest[w];
+			}
+	}
+}
+
+int main() {
+	int t;
+	string word, a, b, s;
+	while (cin >> t){
+		cin.ignore();
+		while (t--) {
+			memset(g, 0, sizeof(g));
+			vector<string>dict;
+			map<string, int>index;
+			int i = 0;
+			while (getline(cin,word)&&word[0] != '*')
+				if (index.count(word) != 1) {
+					index[word] = i++;
+					dict.push_back(word);
+				}
+			n = dict.size();
+			for (int i = 0; i < n; ++i)
+				for (int j = i + 1; j < n; ++j)
+					if (link(dict[i], dict[j]))
+						g[i][j] = g[j][i] = 1;
+			while (getline(cin, s) && s != "") {
+				memset(marked, 0, sizeof(marked));
+				memset(shortest, 0, sizeof(shortest));
+				stringstream ss(s);
+				ss >> a >> b;
+				bfs(index[a]);
+				cout << a << ' ' << b << ' ' << shortest[index[b]] << '\n';
+			}
+			if(t) cout << '\n';
+		}
+	}
+	return 0;
+}
