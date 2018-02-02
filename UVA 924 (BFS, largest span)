@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#define L 2510
+
+using namespace std;
+
+int day, _max, n;
+int heard[L];
+int p[L];
+vector<list<int> >ad;
+
+void bfs(int s) {
+	heard[s] = 1;
+	queue<int>path;
+	path.push(s);
+	int current_day = 0, ct = 0;
+	while (!path.empty()) {
+		int w = path.front(); path.pop();
+		if (p[w] != current_day) {
+			if (_max < ct) {
+				_max = ct;
+				day = current_day;
+			}
+			current_day++;
+			ct = 0;
+		}
+		for (int i : ad[w])
+			if (!heard[i]) {
+				heard[i] = 1;
+				p[i] = 1 + p[w];
+				path.push(i);
+				ct++;
+			}
+	}
+}
+int main() {
+	int t, m, s;
+	while (scanf_s("%d", &n)==1) {
+		ad.clear();
+		for (int i = 0; i < n; ++i) {
+			list<int>v;
+			ad.push_back(v);
+		}
+		for (int i = 0; i < n; ++i) {
+			scanf_s("%d", &t);
+			while (t--) {
+				scanf_s("%d", &m);
+				ad[i].push_back(m);
+			}
+		}
+		scanf_s("%d", &t);
+		while (t--) {
+			memset(heard, 0, sizeof(heard));
+			memset(p, 0, sizeof(p));
+			_max = day = 0;
+			scanf_s("%d", &s);
+			bfs(s);
+			if (_max == 0) cout << 0;
+			else cout << _max << ' ' << day + 1;
+			cout << '\n';
+		}
+	}
+	return 0;
+}
