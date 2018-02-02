@@ -1,0 +1,59 @@
+#include <iostream>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#define L 1010
+
+using namespace std;
+
+int g[L][L], m, n;
+int start_i, start_j, end_i, end_j;
+int path[L][L];
+const int p[4] = { 1,0,-1,0 };
+const int q[4] = { 0,1,0,-1 };
+struct coor {
+	int _i;
+	int _j;
+};
+
+void travel(coor x) {
+	g[x._i][x._j] = 1;
+	queue<coor>route;
+	route.push(x);
+	while (!route.empty()) {
+		coor v = route.front(); route.pop();
+		for (int k = 0; k < 4; ++k) {
+			int next_i = v._i + p[k], next_j = v._j + q[k];
+			if ((next_i >= 0 && next_j >= 0 && next_i < m&&next_j < n)) {
+				if (!g[next_i][next_j]) {
+					g[next_i][next_j] = 1;
+					path[next_i][next_j] = 1 + path[v._i][v._j];
+					coor next = { next_i,next_j };
+					route.push(next);
+				}
+			}
+		}
+	}
+}
+int main() {
+	int r, b, i, j;
+	string s;
+	while (scanf_s("%d%d", &m, &n)) {
+		if (!m && !n) break;
+		memset(g, 0, sizeof(g));
+		memset(path, 0, sizeof(path));
+		scanf_s("%d", &r);
+		while (r--) { 
+			scanf_s("%d%d", &i, &b);
+			while (b--) {
+				scanf_s("%d", &j);
+				g[i][j] = 1;
+			}
+		}
+		scanf_s("%d%d%d%d", &start_i, &start_j, &end_i, &end_j);
+		coor s = { start_i,start_j }, e = { end_i,end_j };
+		travel(s);
+		cout << path[end_i][end_j] << '\n';
+	}
+	return 0;
+}
