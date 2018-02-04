@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#define L 1010
+
+using namespace std;
+int cc[L];
+typedef pair<int, pair<int, int> > edge;
+
+int root(int i) {
+	if (cc[i] == i) return i;
+	return cc[i] = root(cc[i]);
+}
+bool connected(int i, int j) {
+	return root(i) == root(j);
+}
+void combine(int i, int j) {
+	i = root(i);
+	j = root(j);
+	if (i != j)
+		cc[i] = j;
+}
+
+
+int main() {
+	int n, m, u, v, w;
+	while (scanf_s("%d%d", &n, &m) == 2) {
+		if (!n && !m) break;
+		for (int i = 0; i < n; ++i)
+			cc[i] = i;
+		priority_queue<edge, vector<edge>, greater<edge> >pq;
+		priority_queue<int, vector<int>, greater<int> >weights;
+		while (m--) {
+			scanf_s("%d%d%d", &u, &v, &w);
+			pq.push(make_pair(w, make_pair(u, v)));
+		}
+		while (!pq.empty()) {
+			edge e = pq.top(); pq.pop();
+			int w = e.first;
+			pair<int, int> p = e.second;
+			if (connected(p.first, p.second)) {
+				weights.push(w);
+				continue;
+			}
+			combine(p.first, p.second);
+		}
+		if (weights.empty()) cout << "forest\n";
+		else {
+			cout << weights.top(); weights.pop();
+			while (!weights.empty()) {
+				cout << ' ' << weights.top();
+				weights.pop();
+			}
+			cout << '\n';
+		}
+	}
+	return 0;
+}
