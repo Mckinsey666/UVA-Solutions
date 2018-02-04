@@ -1,0 +1,70 @@
+// UVa.cpp : 定義主控台應用程式的進入點。
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#define L 10010
+
+using namespace std;
+int cc[L];
+typedef pair<int, pair<int, int> > edge;
+
+int root(int i) {
+	if (cc[i] == i) return i;
+	return cc[i] = root(cc[i]);
+}
+bool connected(int i, int j) {
+	return root(i) == root(j);
+}
+void combine(int i, int j) {
+	i = root(i);
+	j = root(j);
+	if (i != j)
+		cc[i] = j;
+}
+
+
+int main() {
+	int n, m, u, v, w, t, cost;
+	while(scanf_s("%d",&t)==1){
+		for (int i = 1; i <= t; ++i) {
+			scanf_s("%d%d%d", &n, &m, &cost);
+				for (int i = 0; i < n; ++i)
+					cc[i] = i;
+				priority_queue<edge, vector<edge>, greater<edge> >pq;
+				while (m--) {
+					scanf_s("%d%d%d", &u, &v, &w);
+					pq.push(make_pair(w, make_pair(u, v)));
+				}
+				int total_cost = 0;
+				int airports = 1;
+				while (!pq.empty()) {
+					edge e = pq.top(); pq.pop();
+					int w = e.first;
+					pair<int, int> p = e.second;
+					if (w >= cost||connected(p.first,p.second))
+						continue;
+					if (!connected(p.first, p.second)) {
+						combine(p.first, p.second);
+						total_cost += w;
+					}
+				}
+				int ct = 0;
+				for (int i = 0; i < n; ++i)
+					if (i == root(i))
+						ct++;
+				cout << "Case #" << i << ": " << total_cost + ct*cost << ' ' << ct << '\n';
+		}
+	}
+	return 0;
+}
