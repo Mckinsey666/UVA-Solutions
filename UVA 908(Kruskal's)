@@ -1,0 +1,71 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#define L 1000100
+
+using namespace std;
+int cc[L];
+typedef pair<int, pair<int, int> > edge;
+
+int root(int i) {
+	if (cc[i] == i) return i;
+	return cc[i] = root(cc[i]);
+}
+bool connected(int i, int j) {
+	return root(i) == root(j);
+}
+void combine(int i, int j) {
+	i = root(i);
+	j = root(j);
+	if (i != j)
+		cc[i] = j;
+}
+
+
+int main() {
+	int n, u, v, w, k, m;
+	bool line = true;
+	while (scanf_s("%d", &n) == 1) {
+		if (line) line = false;
+		else printf_s("\n");
+
+		for (int i = 1; i <= n; ++i)
+			cc[i] = i;
+		int orig = 0;
+		for (int i = 0; i < n-1; ++i) {
+			scanf_s("%d%d%d", &u, &v, &w);
+			orig += w;
+		}
+		priority_queue<edge, vector<edge>, greater<edge> >pq;
+		scanf_s("%d", &k);
+		while (k--) {
+			scanf_s("%d%d%d", &u, &v, &w);
+			pq.push(make_pair(w, make_pair(u, v)));
+		}
+		scanf_s("%d", &m);
+		while (m--) {
+			scanf_s("%d%d%d", &u, &v, &w);
+			pq.push(make_pair(w, make_pair(u, v)));
+		}
+		int new_cost = 0;
+		while (!pq.empty()) {
+			edge e = pq.top(); pq.pop();
+			int w = e.first; pair<int, int> p = e.second;
+			if (connected(p.first, p.second))
+				continue;
+			new_cost += w;
+			combine(p.first, p.second);
+		}
+		printf_s("%d\n%d\n", orig, new_cost);
+	}
+	return 0;
+}
