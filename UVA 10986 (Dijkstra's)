@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <cstdio>
+#include <queue>
+#include <functional>
+#include <utility>
+#define L 20010
+using namespace std;
+typedef pair<int, int>ii;
+typedef pair<double, ii> dii;
+long long d[L];
+
+int main() {
+	int N, n, m, s, t, v, w, l;
+	while (scanf("%d", &N) == 1) {
+		for (int i = 1; i <= N; ++i) {
+			vector<vector<ii> >ad;
+			scanf("%d%d%d%d", &n, &m, &s, &t);
+			for (int i = 0; i < n; ++i) {
+				vector<ii> v;
+				d[i] = 1e18;
+				ad.push_back(v);
+			}
+			d[s] = 0;
+			while (m--) {
+				scanf("%d%d%d", &v, &w, &l);
+				ad[v].push_back(make_pair(w, l));
+				ad[w].push_back(make_pair(v, l));
+			}
+			priority_queue<ii, vector<ii>, greater<ii> >pq;
+			pq.push(make_pair(0, s));
+			while (!pq.empty()) {
+				ii top = pq.top(); pq.pop();
+				int v = top.second;
+				if (top.first == d[v]) {
+					for (ii p : ad[v]) {
+						int w = p.first, len = p.second;
+						if (d[v] + len < d[w]) {
+							d[w] = d[v] + len;
+							pq.push(make_pair(d[w], w));
+						}
+					}
+				}
+			}
+			printf("Case #%d: ", i);
+			if (d[t] == 1e18) printf("unreachable\n");
+			else printf("%lld\n", d[t]);
+		}
+	}
+	return 0;
+}
