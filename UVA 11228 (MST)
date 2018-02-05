@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <cstdio>
+#include <queue>
+#include <functional>
+#include <utility>
+#include <cmath>
+#define L 1010
+using namespace std;
+typedef pair<int, int>ii;
+typedef pair<double, ii> dii;
+int cc[L];
+
+int root(int i) {
+	if (i == cc[i]) return i;
+	return cc[i] = root(cc[i]);
+}
+void combine(int i, int j) {
+	i = root(i);
+	j = root(j);
+	if (i != j) cc[i] = j;
+}
+bool connected(int i, int j) {
+	return root(i) == root(j);
+}
+
+double dist(ii a, ii b) {
+	return sqrt(pow(a.first - b.first, 2) + pow(a.second - b.second, 2));
+}
+
+int main() {
+	int t, n, r, x, y;
+	while (scanf_s("%d", &t) == 1) {
+		for (int i = 1; i <= t; ++i) {
+			scanf_s("%d%d", &n, &r);
+			vector<ii>city;
+			priority_queue<dii, vector<dii>, greater<dii> >pq;
+			for (int i = 0; i < n; ++i) {
+				scanf_s("%d%d", &x, &y);
+				city.push_back(make_pair(x, y));
+				cc[i] = i;
+			}
+			for (int i = 0; i < n; ++i)
+				for (int j = i + 1; j < n; ++j)
+					pq.push(make_pair(dist(city[i], city[j]), make_pair(i, j)));
+			double road = 0, rail = 0;
+			int state = 0;
+			while (!pq.empty()) {
+				dii c = pq.top(); pq.pop();
+				double d = c.first; ii link = c.second;
+				if (connected(link.first, link.second)) continue;
+				combine(link.first, link.second);
+				if (d >= r) {
+					rail += d;
+					state++;
+				}
+				else road += d;
+			}
+			int rd = round(road), rl = round(rail);
+			printf_s("Case #%d: %d %d %d\n", i, state + 1 ,rd, rl);
+		}
+	}
+	return 0;
+}
