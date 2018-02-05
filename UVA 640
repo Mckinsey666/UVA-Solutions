@@ -1,0 +1,36 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#define L 1000100
+using namespace std;
+
+bool self[L];
+
+int ds(int n) {
+	int sum = n;
+	while (n != 0) {
+		sum += n % 10;
+		n /= 10;
+	}
+	return sum;
+}
+int main() {
+	memset(self, 1, sizeof(self));
+	for (int i = 1; i <= 1000000; ++i)
+		self[ds(i)] = 0;
+	for (int i = 1; i <= 1000000; ++i)
+		if (self[i])
+			printf("%d\n", i);
+	return 0;
+}
