@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+using namespace std;
+typedef pair<double, pair<int, int> >dii;
+
+int gcd(int a, int b) {
+	if (b == 0)return a;
+	return gcd(b, a%b);
+}
+int main() {
+	int k, n;
+	while (scanf_s("%d%d", &n, &k)) {
+		priority_queue<dii, vector<dii>, less<dii> >pq;
+		vector<dii>v;
+		for (int i = 1; i <= n; ++i)
+			for (int j = 1; j <= i; ++j)
+				if (gcd(i, j) == 1)
+					v.push_back(make_pair(double(j) / double(i), make_pair(j, i)));
+		sort(v.begin(), v.end());
+		printf_s("%d/%d\n", v[k-1].second.first, v[k-1].second.second);
+	}
+	return 0;
+}
