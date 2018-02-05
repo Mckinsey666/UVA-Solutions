@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#define L 1000
+using namespace std;
+typedef pair<int, int>ii;
+typedef pair<double, ii> dii;
+long long d[L*L];
+
+int main() {
+	int t, n, m, val;
+	while (scanf("%d", &t) == 1) {
+		while (t--) {
+			scanf("%d%d", &n, &m);
+			vector<vector<ii> >g;
+			for (int i = 0; i < n*m; ++i) {
+				d[i] = 1e18;
+				vector<ii>v; g.push_back(v);
+			}
+			
+			for (int i = 0; i < n; ++i)
+				for (int j = 0; j < m; ++j) {
+					scanf("%d", &val);
+					if (!i && !j)d[0] = val;
+					if (i > 0) g[m*(i - 1) + j].push_back(make_pair(val, m*i + j));
+					if (j > 0) g[m*i + j - 1].push_back(make_pair(val, m*i + j));
+					if (i < n-1) g[m*(i + 1) + j].push_back(make_pair(val, m*i + j));
+					if (j < m-1) g[m*i + j + 1].push_back(make_pair(val, m*i + j));
+				}
+			
+			priority_queue<ii, vector<ii>, greater<ii> >pq;
+			pq.push(make_pair(d[0], 0));
+			while (!pq.empty()) {
+				ii top = pq.top(); pq.pop();
+				int len = top.first, v = top.second;
+				if (len == d[v]) {
+					for (ii x : g[v]) {
+						int l = x.first, w = x.second;
+						if (d[v] + l < d[w]) {
+							d[w] = d[v] + l;
+							pq.push(make_pair(d[w], w));
+						}
+					}
+				}
+			}
+			printf("%lld", d[n*m - 1]);
+			if (t) printf("\n");
+		}
+	}
+	return 0;
+}
