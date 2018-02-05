@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+using namespace std;
+
+int main() {
+	long long a, l;
+	int i = 1;
+	while (scanf_s("%lld%lld", &a, &l) == 2) {
+		long long n = a;
+		if (n < 0 && l < 0) break;
+		int t = 1;
+		while (n != 1) {
+			if (n % 2 == 0) n /= 2;
+			else n = 3 * n + 1;
+			if (n > l) break;
+			++t;
+		}
+		printf_s("Case %d: A = %lld, limit = %lld, number of terms = %d\n", i++, a, l, t);
+	}
+	return 0;
+}
