@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+using namespace std;
+
+bool sqr(long long n) {
+	return (pow(int(sqrt(n)), 2) == n);
+}
+
+int main() {
+	cout << setw(10) << 6 << setw(10) << 8 << '\n';
+	cout << setw(10) << 35 << setw(10) << 49 << '\n';
+	long long i = 2, k = 50;
+	while (i < 10) {
+		if (sqr(k*(k + 1) / 2)) {
+			long long n = (sqrt(k*(k + 1) / 2));
+			cout << setw(10) << n << setw(10) << k << '\n';
+			i++;
+		}
+		k++;
+	}
+	return 0;
+}
