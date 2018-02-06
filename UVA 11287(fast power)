@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#include <string>
+#include <sstream>
+#include <bitset>
+#define bound 100001
+using namespace std;
+typedef long long ll;
+
+bitset<bound + 10>bs;
+vector<ll>primes;
+
+void sieve() {
+	int sz = bound + 1;
+	bs.reset(); bs.flip();
+	bs.set(0, 0); bs.set(1, 0);
+	for (ll i = 2; i <= sz; ++i)
+		if (bs.test(i)) {
+			for (ll j = i*i; j <= sz; j += i)
+				bs.set(j, 0);
+			primes.push_back(i);
+		}
+}
+bool is_prime(ll n) {
+	if (n < bound) return bs.test(n);
+	for (int i = 0; i < primes.size(); ++i)if (n%primes[i] == 0)return false;
+	return true;
+}
+
+int pow_mod(ll a, ll p, ll b) {
+	if (p == 1) return a%b;
+	if (p % 2 == 0) {
+		ll r = pow_mod(a, p / 2, b);
+		return (r*r)%b;
+	}
+	else {
+		ll r = pow_mod(a, p / 2, b);
+		return ((r*r) % b*a) % b;
+	}
+}
+
+int main() {
+	sieve();
+	ll p, a;
+	while (scanf("%lld%lld", &p, &a) == 2) {
+		if (!p && !a)break;
+		if (pow_mod(a, p, p) == a && !is_prime(p)) printf("yes\n");
+		else printf("no\n");
+	}
+ 	return 0;
+}
