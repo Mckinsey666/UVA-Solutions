@@ -1,0 +1,93 @@
+// UVa.cpp : 定義主控台應用程式的進入點。
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#include <string>
+#include <sstream>
+#define rep(i,a,b) for(int i=a;i<b;++i)
+using namespace std;
+typedef pair<int, int> ii;
+int elev[5][100];
+
+int main() {
+	int n, k, flr, t;
+	string s;
+	bool line = false;
+	while (scanf_s("%d%d", &n, &k) == 2) {
+	//To the k-th floor
+		vector<int>time(n, 0);
+		vector<vector<ii> >g(100 * n);
+		vector<vector<int> >_floor(100);
+		rep(i, 0, n) scanf_s("%d", &time[i]);
+		cin.ignore();
+	//i-th elevator
+		rep(i, 0, n) {
+			getline(cin, s);  stringstream ss(s);
+			vector<int> v;
+			while (ss >> flr) {
+				v.push_back(flr);
+				_floor[flr].push_back(i);
+			}
+			rep(k, 0, v.size() - 1)
+				rep(j, k, v.size()) {
+				g[100 * i + v[k]].push_back(make_pair(100 * i + v[j], time[i] * abs(v[j] - v[k])));
+				g[100 * i + v[j]].push_back(make_pair(100 * i + v[k], time[i] * abs(v[j] - v[k])));
+			}
+		}
+		rep(i, 0, 100) {
+			if (!_floor[i].empty()) {
+				rep(j, 0, _floor[i].size() - 1)
+					rep(k, j, _floor[i].size() - 1) {
+					g[100 * _floor[i][k] + i].push_back(make_pair(100 * _floor[i][k + 1] + i, 60));
+					g[100 * _floor[i][k + 1] + i].push_back(make_pair(100 * _floor[i][k] + i, 60));
+				}
+			}
+		}
+		int overall_min = 1e9;
+		rep(i, 0, n) {
+			vector<int>d(100 * n, 0);
+			rep(j, 0, 100 * n)
+				d[j] = 1e9;
+			d[100*i+k] = 0;
+			priority_queue < ii, vector<ii>, greater<ii> >pq;
+			pq.push(make_pair(0, 100 * i+k));
+			while (!pq.empty()) {
+				ii top = pq.top(); pq.pop();
+				int dist = top.first,v = top.second;
+				if (dist == d[v]) {
+					for (ii flr : g[v]) {
+						int w = flr.first, t = flr.second;
+						if (t + d[v] < d[w]) {
+							d[w] = t + d[v];
+							pq.push(make_pair(d[w], w));
+						}
+					}
+				}
+			}
+			int _min = 1e9;
+			for (int j = 0; j < n; ++j)
+				_min = min(_min, d[100 * j]);
+			overall_min = min(overall_min, _min);
+		}
+		//if (line)cout << '\n';
+		//else line = true;
+		cout << "ans: ";
+		if (overall_min == 1e9) printf_s("IMPOSSIBLE");
+		else printf_s("%d", overall_min);
+		//cout << '\n';
+	}
+	return 0;
+}
