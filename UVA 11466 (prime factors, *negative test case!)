@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#include <string>
+#include <sstream>
+#include <bitset>
+#define bound 10000000
+using namespace std;
+typedef long long ll;
+
+bitset<bound + 10>bs;
+vector<ll>primes;
+void sieve() {
+	int sz = bound + 1;
+	bs.reset(); bs.flip();
+	bs.set(0, 0); bs.set(1, 0);
+	for (ll i = 2; i <= sz; ++i)
+		if (bs.test(i)) {
+			for (ll j = i*i; j <= sz; j += i)
+				bs.set(j, 0);
+			primes.push_back(i);
+		}
+}
+
+vector<ll>factors(ll n) {
+	vector<ll>f;
+	ll i = 0, pf = primes[i];
+	while (n != 1 && pf*pf <= n) {
+		while (n%pf == 0) { n /= pf; f.push_back(pf); }
+		pf = primes[++i];
+	}
+	if (n != 1)f.push_back(n);
+	return f;
+}
+
+int main() {
+	sieve();
+	ll n;
+	bool line = false;
+	while (scanf("%lld", &n)==1) {
+		if (n == 0)break;
+		n = abs(n);
+		vector<ll>pf = factors(n);
+		set<ll>ct;
+		for (int i = 0; i < pf.size(); ++i)
+			ct.insert(pf[i]);
+		if (ct.size() < 2)printf("%d\n", -1);
+		else {
+			set<ll>::iterator it = ct.end(); it--;
+			printf("%lld\n", *it);
+		}
+	}
+ 	return 0;
+}
