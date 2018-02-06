@@ -1,0 +1,73 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#include <string>
+#include <sstream>
+#include <bitset>
+#define bound 10000000
+using namespace std;
+typedef long long ll;
+
+bitset<bound + 10>bs;
+vector<ll>primes;
+ll factorsum[bound + 10] = { 0 };
+void sieve() {
+	int sz = bound + 1;
+	bs.reset(); bs.flip();
+	bs.set(0, 0); bs.set(1, 0);
+	for (ll i = 2; i <= sz; ++i)
+		if (bs.test(i)) {
+			for (ll j = i; j <= sz; j += i) {
+				factorsum[j] += i;
+				bs.set(j, 0);
+			}
+			bs.set(i, 1);
+			primes.push_back(i);
+		}
+}
+bool is_prime(ll n) {
+	if (n < bound) return bs.test(n);
+	for (int i = 0; i < primes.size(); ++i)if (n%primes[i] == 0)return false;
+	return true;
+}
+vector<ll>factors(ll n) {
+	vector<ll>f;
+	ll i = 0, pf = primes[i];
+	while (n != 1 && pf*pf <= n) {
+		while (n%pf == 0) { n /= pf; f.push_back(pf); }
+		pf = primes[++i];
+	}
+	if (n != 1)f.push_back(n);
+	return f;
+}
+
+int main() {
+	sieve();
+	ll a, b;
+	bitset<5000001>deprime; deprime.reset();
+	for (ll i = 2; i <= 5000000; ++i)
+		if (is_prime(factorsum[i])) deprime.set(i, 1);
+	
+	while (scanf("%lld", &a)==1) {
+		if (a == 0)break;
+		scanf("%lld", &b);
+		int ct = 0;
+		for (ll i = a; i <= b; ++i) {
+			if (deprime.test(i))
+				ct++;
+		}
+		printf("%d\n", ct);
+	}
+ 	return 0;
+}
