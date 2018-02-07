@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cstdio>
+#include <map>
+#include <cmath>
+#include <bitset>
+#include <vector>
+#define bound 44722
+using namespace std;
+typedef long long ll;
+
+bitset<bound + 10>bs;
+vector<ll>primes;
+
+void sieve() {
+	int sz = bound + 1;
+	bs.reset(); bs.flip();
+	bs.set(0, 0); bs.set(1, 0);
+	for (ll i = 2; i <= sz; ++i)
+		if (bs.test(i)) {
+			for (ll j = i*i; j <= sz; j += i)
+				bs.set(j, 0);
+			primes.push_back(i);
+		}
+}
+
+map<ll,int>factors(ll n) {
+	map<ll,int>f;
+	ll i = 0, pf = primes[i];
+	while (n != 1 && pf*pf <= n) {
+		while (n%pf == 0) { n /= pf; f[pf]++; }
+		pf = primes[++i];
+	}
+	if (n != 1)f[n]++;
+	return f;
+}
+
+int main() {
+	ll n;
+	sieve();
+	while (scanf_s("%lld", &n)==1) {
+		if (n == 0)break;
+		map<ll,int>pf = factors(n);
+		ll ct = 1;
+		for (auto it = pf.begin(); it != pf.end(); ++it) ct *= 2 * (it->second) + 1;
+		ct = ct / 2 + 1;
+		printf_s("%lld %lld\n", n, ct);
+	}
+ 	return 0;
+}
