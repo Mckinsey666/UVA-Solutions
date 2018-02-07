@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <cstring>
+#include <list>
+#include <functional>
+#include <utility>
+#include <map>
+#include <iomanip>
+#include <set>
+#include <cmath>
+#include <string>
+#include <sstream>
+#include <bitset>
+#define bound 20000000
+using namespace std;
+typedef long long ll;
+
+bitset<bound + 10>bs;
+vector<ll>primes;
+
+void sieve() {
+	int sz = bound + 1;
+	bs.reset(); bs.flip();
+	bs.set(0, 0); bs.set(1, 0);
+	for (ll i = 2; i <= sz; ++i)
+		if (bs.test(i)) {
+			for (ll j = i*i; j <= sz; j += i)
+				bs.set(j, 0);
+			primes.push_back(i);
+		}
+}
+
+int main() {
+	sieve();
+	vector<pair<int, int> >twins;
+	for (int i = 0; i < primes.size() - 1; ++i)
+		if (primes[i + 1] - primes[i] == 2)
+			twins.push_back(make_pair(primes[i], primes[i + 1]));
+	int n;
+	while (scanf("%d", &n) == 1)
+		printf("(%d, %d)\n", twins[n - 1].first, twins[n - 1].second);
+ 	return 0;
+}
