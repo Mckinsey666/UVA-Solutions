@@ -1,0 +1,20 @@
+#include <cstdio>
+using namespace std;
+
+ll pow_mod(ll b, ll p, ll m) {
+	if (p == 0)return 1 % m;
+	if (p == 1)return b%m;
+	ll r = pow_mod(b, p / 2, m);
+	if (p % 2 == 0) return r*r%m;
+	return ((r*r%m)*b)%m;
+}
+
+int main() {
+	ll b, p, m;
+	char c;
+	while (scanf("%lld%lld%lld", &b, &p, &m) == 3) {
+		c = getchar(); c = getchar();
+		printf("%lld\n", pow_mod(b, p, m));
+	}
+ 	return 0;
+}
