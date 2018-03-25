@@ -1,0 +1,17 @@
+
+vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+	int h = nums.size(), w = nums[0].size();
+	if (h*w != r*c) return nums;
+
+	vector<vector<int> >reshaped;
+	for (int i = 0; i < r; ++i)
+		reshaped.push_back(vector<int>());
+	int currentRow = 0;
+	for (int i = 0; i < h; ++i)
+		for (int j = 0; j < w; ++j) {
+			reshaped[currentRow].push_back(nums[i][j]);
+			if (reshaped[currentRow].size() == c)
+				currentRow++;
+		}
+	return reshaped;
+}
